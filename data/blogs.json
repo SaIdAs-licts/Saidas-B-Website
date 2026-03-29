@@ -1,0 +1,24 @@
+[{
+  "id": "1",
+  "title": "Finding Insights in Financial Data",
+  "category": "Finance",
+  "date": "2026-03-29",
+  "summary": "Exploring the powerful intersection of data analytics and financial strategy. How modern data analysis helps uncover hidden opportunities.",
+  "content": "<p>When analyzing financial markets, having a robust data infrastructure is key. In this post, we discuss methodologies for tracking trends using python and building predictive models to extract actionable insights.</p>"
+},
+{
+  "id": "2",
+  "title": "The Art of Writing: A Research Journey",
+  "category": "Writing",
+  "date": "2026-03-20",
+  "summary": "Documenting my research on effective writing techniques and how to communicate complex industrial engineering concepts clearly.",
+  "content": "<p>Writing is a bridge between complex ideas and human understanding. Through my recent research, I've discovered how structured narratives improve comprehension in corporate environments.</p>"
+},
+{
+  "id": "3",
+  "title": "Transitioning from Industrial Engineering to Finance",
+  "category": "Career",
+  "date": "2026-03-10",
+  "summary": "My personal journey of shifting domains and the powerful synergies between engineering optimization and financial management.",
+  "content": "<p>Industrial Engineering teaches optimization and systems thinking. These core principles are incredibly valuable in the Master of Management in Finance, where balancing risk and return is a daily challenge.</p>"
+}]
