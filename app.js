@@ -4,6 +4,102 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
+    // --- 0. SPA Tab Router ---
+    const tabMap = {
+        '#hero': ['#hero'],
+        '#about': ['#about'],
+        '#skills': ['#skills', '#services'],
+        '#projects': ['#projects'],
+        '#hobbies': ['#hobbies'],
+        '#blog': ['#blog'],
+        '#contact': ['#contact']
+    };
+
+    // Add CSS classes dynamically to initialize tab sections
+    document.body.classList.add('js-enabled');
+    const allTabSections = document.querySelectorAll('header.hero, section.about, section.skills, section.services, section.projects, section.hobbies, section.blog, section.contact');
+    
+    allTabSections.forEach(section => {
+        section.classList.add('tab-hidden');
+    });
+
+    function switchTab(targetHash) {
+        // Default to #hero if hash is empty or not in map
+        const activeHash = tabMap[targetHash] ? targetHash : '#hero';
+        
+        // Hide all sections, remove reveal actives so they can animate again
+        allTabSections.forEach(section => {
+            section.classList.add('tab-hidden');
+            section.classList.remove('active');
+            section.querySelectorAll('.reveal').forEach(r => r.classList.remove('active'));
+        });
+
+        // Show active sections
+        const sectionsToShow = tabMap[activeHash];
+        sectionsToShow.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.classList.remove('tab-hidden');
+                
+                // Small timeout to allow browser layout update before triggering transition animations
+                setTimeout(() => {
+                    el.classList.add('active');
+                    const revealsInside = el.querySelectorAll('.reveal');
+                    revealsInside.forEach(r => r.classList.add('active'));
+                    
+                    // Special case for skills progress bars
+                    if (selector === '#skills') {
+                        const skillBars = el.querySelectorAll('.progress-line span');
+                        skillBars.forEach(bar => {
+                            const width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
+                            bar.style.width = width;
+                        });
+                    }
+                }, 50);
+            }
+        });
+
+        // Update active class on nav links
+        const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu a');
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === activeHash) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Scroll to top instantly
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // Listen to hashchange event
+    window.addEventListener('hashchange', () => {
+        switchTab(window.location.hash);
+    });
+
+    // Intercept clicks on links that reference tabs
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link) {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const targetHash = href;
+                if (tabMap[targetHash]) {
+                    e.preventDefault();
+                    window.location.hash = targetHash;
+                } else if (targetHash === '#hero' || targetHash === '#') {
+                    e.preventDefault();
+                    window.location.hash = '#hero';
+                }
+            }
+        }
+    });
+
+    // Initialize the active tab based on current URL hash or default
+    switchTab(window.location.hash || '#hero');
+    
     // --- 1. Mobile Menu Toggle ---
     const mobileBtn = document.getElementById('mobile-menu-btn');
     const closeBtn = document.getElementById('close-menu-btn');

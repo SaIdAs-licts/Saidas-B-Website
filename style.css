@@ -66,6 +66,11 @@ ul {
   margin: 0 auto;
 }
 
+/* SPA Tab Routing */
+.js-enabled .tab-hidden {
+  display: none !important;
+}
+
 .highlight {
   color: var(--accent-cyan);
 }
