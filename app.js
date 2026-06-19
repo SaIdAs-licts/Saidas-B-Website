@@ -371,40 +371,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 8. Custom Cursor Interaction ---
-    const customCursor = document.getElementById('custom-cursor');
+    // --- 8. Custom Interactive Cursor ---
+    const cursor = document.getElementById('custom-cursor');
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    if (!isTouchDevice && customCursor) {
-        // Track position
-        window.addEventListener('mousemove', (e) => {
-            customCursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    if (isTouchDevice && cursor) {
+        cursor.style.display = 'none';
+    } else if (cursor) {
+        // Move cursor smoothly
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
         });
 
-        // Hover expand/scale logic (delegated for dynamic elements)
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('a, button, .btn, .tab-btn, input, textarea, select, [data-framer-cursor]')) {
-                customCursor.classList.add('hovered');
-            }
-        });
+        // Toggle hover scaling class
+        const addHoverListeners = () => {
+            const clickables = document.querySelectorAll('a, button, .btn, .tab-btn, input, textarea, select, #open-admin-btn, .close-btn');
+            clickables.forEach(el => {
+                if (el.dataset.hasCursorListener) return;
+                el.dataset.hasCursorListener = 'true';
 
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('a, button, .btn, .tab-btn, input, textarea, select, [data-framer-cursor]')) {
-                customCursor.classList.remove('hovered');
-            }
-        });
+                el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+            });
+        };
 
-        // Hide when mouse leaves window
-        document.addEventListener('mouseleave', () => {
-            customCursor.classList.add('cursor-hidden');
-        });
-        
-        document.addEventListener('mouseenter', () => {
-            customCursor.classList.remove('cursor-hidden');
-        });
-    } else if (customCursor) {
-        customCursor.style.display = 'none';
-        document.body.style.cursor = 'auto';
+        addHoverListeners();
+
+        // Use MutationObserver to apply hover listener to dynamically loaded elements (e.g. blog read more buttons)
+        const observer = new MutationObserver(addHoverListeners);
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     // Initialize Blog Fetching
