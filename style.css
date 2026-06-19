@@ -2064,20 +2064,23 @@ footer p {
   .social-links {
     justify-content: center;
   }
+}
 
-  @media (max-width: 480px) {
-    .hero-actions {
-      flex-direction: column;
-      gap: 0.8rem;
-      width: 100%;
-      align-items: center;
-    }
-    .hero-actions .btn {
-      width: 100%;
-      max-width: 280px;
-      text-align: center;
-    }
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    align-items: center;
   }
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 991px) {
   
   /* Redesigned About Responsive widgets & timeline */
   .about-widgets-grid {
