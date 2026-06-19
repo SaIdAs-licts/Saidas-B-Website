@@ -371,6 +371,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 8. Custom Cursor Interaction ---
+    const customCursor = document.getElementById('custom-cursor');
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (!isTouchDevice && customCursor) {
+        // Track position
+        window.addEventListener('mousemove', (e) => {
+            customCursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        });
+
+        // Hover expand/scale logic (delegated for dynamic elements)
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, .btn, .tab-btn, input, textarea, select, [data-framer-cursor]')) {
+                customCursor.classList.add('hovered');
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            if (e.target.closest('a, button, .btn, .tab-btn, input, textarea, select, [data-framer-cursor]')) {
+                customCursor.classList.remove('hovered');
+            }
+        });
+
+        // Hide when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            customCursor.classList.add('cursor-hidden');
+        });
+        
+        document.addEventListener('mouseenter', () => {
+            customCursor.classList.remove('cursor-hidden');
+        });
+    } else if (customCursor) {
+        customCursor.style.display = 'none';
+        document.body.style.cursor = 'auto';
+    }
+
     // Initialize Blog Fetching
     loadBlogs();
 });
