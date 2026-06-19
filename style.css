@@ -559,61 +559,55 @@ ul {
   box-shadow: var(--shadow-flat-sm);
 }
 
-.hero-image {
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.image-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 370px;
-  border-radius: var(--radius-md);
-  border: var(--border-width) solid var(--border-color);
-  box-shadow: var(--shadow-flat);
-  overflow: hidden;
-}
-
-.image-wrapper img {
-  width: 100%;
-  height: auto;
+.hero-image-placeholder {
   display: block;
-  filter: grayscale(12%);
-  transition: var(--transition-normal);
 }
 
-.image-wrapper img:hover {
-  filter: grayscale(0%);
-  transform: scale(1.02);
-}
-
-.experience-badge {
+.hero-peekaboo {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background-color: var(--bg-card);
-  padding: 10px 16px;
-  border-radius: var(--radius-sm);
-  border: var(--border-width) solid var(--border-color);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: var(--shadow-flat-sm);
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(80%); /* Default: mostly hidden off-screen, leaving transparent trigger zone */
+  width: 440px;
+  height: 440px;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 10;
+  pointer-events: auto; /* Enable hover triggers */
+  cursor: pointer;
+  overflow: visible;
 }
 
-.experience-badge i {
-  font-size: 1.1rem;
-  color: var(--text-dark);
+.hero-peekaboo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.experience-badge span {
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: var(--font-mono);
+/* Auto-peek entry animation when hero section becomes active */
+.hero.active .hero-peekaboo {
+  animation: peekaboo-entry-desktop 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hover state to peek in fully */
+.hero-peekaboo:hover {
+  transform: translateY(-50%) translateX(27%) !important;
+  animation: none !important;
+}
+
+@keyframes peekaboo-entry-desktop {
+  0% {
+    transform: translateY(-50%) translateX(100%);
+  }
+  20% {
+    transform: translateY(-50%) translateX(27%); /* Peek in fully */
+  }
+  80% {
+    transform: translateY(-50%) translateX(27%); /* Hold peek */
+  }
+  100% {
+    transform: translateY(-50%) translateX(80%); /* Slide back to edge trigger state */
+  }
 }
 
 /* Alternating Panel Layout (White/Off-white) */
@@ -2031,9 +2025,43 @@ footer p {
     overflow: hidden;
   }
 
-  .hero-image {
-    order: 1;
-    margin-bottom: 0.5rem;
+  .hero-image-placeholder {
+    display: none;
+  }
+
+  .hero-peekaboo {
+    top: auto;
+    bottom: 0;
+    transform: translateX(80%); /* Default trigger state on mobile */
+    width: 240px;
+    height: 240px;
+    z-index: 10;
+    pointer-events: auto; /* Enable tap/touch interaction */
+  }
+
+  .hero.active .hero-peekaboo {
+    animation: peekaboo-entry-mobile 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-peekaboo:hover,
+  .hero-peekaboo:active {
+    transform: translateX(27%) !important;
+    animation: none !important;
+  }
+
+  @keyframes peekaboo-entry-mobile {
+    0% {
+      transform: translateX(100%);
+    }
+    20% {
+      transform: translateX(27%); /* Peek in fully on mobile */
+    }
+    80% {
+      transform: translateX(27%); /* Hold */
+    }
+    100% {
+      transform: translateX(80%); /* Slide back to edge trigger state */
+    }
   }
   
   .status-badge {
