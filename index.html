@@ -154,26 +154,47 @@
                 <div class="widget-col">
                     <div class="widget-card language-card">
                         <div class="widget-card-header">
-                            <h4>Spoken language</h4>
-                            <p class="widget-card-subtitle">A mix of tongues..</p>
+                            <h4><i class="fa-solid fa-bullhorn" style="margin-right: 8px; font-size: 1rem; color: var(--text-dark);"></i>Spoken language</h4>
+                            <p class="widget-card-subtitle">Oui oui baguette..</p>
                         </div>
-                        <ul class="languages-widget-list">
-                            <li>
-                                <span class="lang-name">English</span>
-                                <span class="lang-level">Fluent</span>
-                            </li>
-                            <li>
-                                <span class="lang-name">Malayalam</span>
-                                <span class="lang-level">Native</span>
-                            </li>
-                            <li>
-                                <span class="lang-name">Hindi</span>
-                                <span class="lang-level">Conversational</span>
-                            </li>
-                        </ul>
-                        <!-- Glossy Black 3D Sphere -->
-                        <div class="black-sphere-wrapper">
-                            <div class="black-sphere"></div>
+                        <div class="language-cards-container">
+                            <!-- Language Card 1: Malayalam (Native) -->
+                            <div class="lang-pill-card lang-card-1">
+                                <div class="lang-flag-wrapper">
+                                    <img src="https://flagcdn.com/w80/in.png" alt="India flag">
+                                </div>
+                                <div class="lang-info">
+                                    <span class="lang-title">Malayalam</span>
+                                    <span class="lang-subtitle">Native</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Language Card 2: English (Fluent) -->
+                            <div class="lang-pill-card lang-card-2">
+                                <div class="lang-flag-wrapper">
+                                    <img src="https://flagcdn.com/w80/gb.png" alt="UK flag">
+                                </div>
+                                <div class="lang-info">
+                                    <span class="lang-title">English</span>
+                                    <span class="lang-subtitle">Fluent</span>
+                                </div>
+                            </div>
+
+                            <!-- Language Card 3: Hindi (Conversational) -->
+                            <div class="lang-pill-card lang-card-3">
+                                <div class="lang-flag-wrapper">
+                                    <img src="https://flagcdn.com/w80/in.png" alt="India flag">
+                                </div>
+                                <div class="lang-info">
+                                    <span class="lang-title">Hindi</span>
+                                    <span class="lang-subtitle">Conversational</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Spinning WebGL Globe Canvas -->
+                        <div class="globe-canvas-wrapper">
+                            <canvas id="globe-canvas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -644,5 +665,74 @@
 
     <!-- App Logic -->
     <script src="app.js"></script>
+    <script type="module">
+        import createGlobe from 'https://cdn.jsdelivr.net/npm/cobe@0.6.3/+esm';
+
+        const canvas = document.getElementById('globe-canvas');
+        if (canvas) {
+            let phi = 0;
+            let theta = 0.2; // Slight tilt
+            let pointerInteracting = null;
+            let pointerInteractionMovement = 0;
+
+            // Set fixed high-res backing store size (520x520) for sharp rendering on all displays
+            canvas.width = 520;
+            canvas.height = 520;
+
+            const globe = createGlobe(canvas, {
+                devicePixelRatio: 2,
+                width: 520,
+                height: 520,
+                phi: 0,
+                theta: 0.2,
+                dark: 1,
+                diffuse: 1.2,
+                mapSamples: 16000,
+                mapBrightness: 6,
+                baseColor: [1, 1, 1],          // White/light-grey land dots
+                markerColor: [1, 1, 1],        // White location marker
+                glowColor: [0.12, 0.12, 0.12],  // Subtle atmospheric glow
+                markers: [
+                    { location: [19.0760, 72.8777], size: 0.08 } // Mumbai, India
+                ],
+                onRender: (state) => {
+                    if (!pointerInteracting) {
+                        phi += 0.005; // Slow automatic rotation
+                    }
+                    state.phi = phi + pointerInteractionMovement;
+                    state.theta = theta;
+                }
+            });
+
+            // Grab / Drag to rotate pointer events
+            canvas.addEventListener('pointerdown', (e) => {
+                pointerInteracting = e.clientX - pointerInteractionMovement;
+                canvas.style.cursor = 'grabbing';
+            });
+
+            canvas.addEventListener('pointerup', () => {
+                phi += pointerInteractionMovement;
+                pointerInteractionMovement = 0;
+                pointerInteracting = null;
+                canvas.style.cursor = 'grab';
+            });
+
+            canvas.addEventListener('pointerout', () => {
+                if (pointerInteracting !== null) {
+                    phi += pointerInteractionMovement;
+                    pointerInteractionMovement = 0;
+                    pointerInteracting = null;
+                    canvas.style.cursor = 'grab';
+                }
+            });
+
+            canvas.addEventListener('pointermove', (e) => {
+                if (pointerInteracting !== null) {
+                    const delta = e.clientX - pointerInteracting;
+                    pointerInteractionMovement = delta * 0.015; // Drag sensitivity
+                }
+            });
+        }
+    </script>
 </body>
 </html>
