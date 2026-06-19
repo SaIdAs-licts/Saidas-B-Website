@@ -348,16 +348,31 @@ ul {
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: rgba(241, 240, 235, 0.95);
   backdrop-filter: blur(8px);
-  border-bottom: var(--border-width) solid var(--border-color);
   z-index: 1000;
   padding: 18px 0;
-  transition: var(--transition-normal);
+  transition: background-color 0.3s ease, padding 0.3s ease;
+  background-color: rgba(241, 240, 235, 0.95); /* fallback */
+  border-bottom: none;
 }
 
 .navbar.scrolled {
   padding: 12px 0;
+}
+
+.navbar.theme-hero {
+  background-color: rgba(184, 251, 1, 0.92);
+}
+
+.navbar.theme-about,
+.navbar.theme-projects,
+.navbar.theme-blog,
+.navbar.theme-contact {
+  background-color: rgba(241, 240, 235, 0.95);
+}
+
+.navbar.theme-hobbies {
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .nav-container {

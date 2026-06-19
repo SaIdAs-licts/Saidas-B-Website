@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Default to #hero if hash is empty or not in map
         const activeHash = tabMap[targetHash] ? targetHash : '#hero';
         
+        // Update navbar theme class dynamically to blend with background
+        const navbarEl = document.getElementById('navbar');
+        if (navbarEl) {
+            navbarEl.classList.remove('theme-hero', 'theme-about', 'theme-projects', 'theme-hobbies', 'theme-blog', 'theme-contact');
+            const themeClass = `theme-${activeHash.replace('#', '')}`;
+            navbarEl.classList.add(themeClass);
+        }
+        
         // Hide all sections, remove reveal actives so they can animate again
         allTabSections.forEach(section => {
             section.classList.add('tab-hidden');
