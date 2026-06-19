@@ -378,15 +378,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isTouchDevice && cursor) {
         cursor.style.display = 'none';
     } else if (cursor) {
-        // Move cursor smoothly
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+        const speed = 0.15; // Smooth trailing factor
+
+        // Update mouse position
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
+
+        // Smoothly animate cursor position using lerp and requestAnimationFrame
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * speed;
+            cursorY += (mouseY - cursorY) * speed;
+            
+            cursor.style.left = `${cursorX}px`;
+            cursor.style.top = `${cursorY}px`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+        
+        // Start animation
+        animateCursor();
 
         // Toggle hover scaling class
         const addHoverListeners = () => {
-            const clickables = document.querySelectorAll('a, button, .btn, .tab-btn, input, textarea, select, #open-admin-btn, .close-btn');
+            const clickables = document.querySelectorAll('a, button, .btn, .tab-btn, input, textarea, select, #open-admin-btn, .close-btn, .tech-icon-circle, .book-item, .value-pill, .collage-card');
             clickables.forEach(el => {
                 if (el.dataset.hasCursorListener) return;
                 el.dataset.hasCursorListener = 'true';
@@ -398,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addHoverListeners();
 
-        // Use MutationObserver to apply hover listener to dynamically loaded elements (e.g. blog read more buttons)
+        // Use MutationObserver to apply hover listener to dynamically loaded elements
         const observer = new MutationObserver(addHoverListeners);
         observer.observe(document.body, { childList: true, subtree: true });
     }
