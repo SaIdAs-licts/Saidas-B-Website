@@ -1344,21 +1344,21 @@ footer p {
 
 .about-widgets-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: 1.05fr 0.8fr 1.15fr; /* Narrower middle column to give Column 3 (Map & Books) more space */
+  gap: 1.5rem; /* Slightly reduced gap to prevent horizontal overflow */
   margin-bottom: 6rem;
 }
 
 .widget-col {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem; /* Reduced gap from 2rem to 1.5rem */
 }
 
 .widget-card {
   background: var(--bg-card);
   border-radius: 20px;
-  padding: 2.5rem 2rem;
+  padding: 2.2rem 1.4rem; /* Slightly reduced padding to prevent content overflow on standard displays */
   box-shadow: 0 4px 20px rgba(0,0,0,0.03);
   border: 1px solid rgba(0, 0, 0, 0.03);
   display: flex;
@@ -1571,6 +1571,13 @@ footer p {
   font-weight: 700;
   box-shadow: 2px 2px 0px var(--border-color);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (max-width: 1200px) {
+  .value-pill {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
 }
 
 .value-pill:nth-child(1) {
