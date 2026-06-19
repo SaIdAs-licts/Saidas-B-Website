@@ -1222,6 +1222,7 @@ footer p {
   margin-bottom: 2rem;
   box-shadow: var(--shadow-flat-sm);
   transition: transform 0.3s ease;
+  background-color: #eae6df; /* Match drawing paper background */
 }
 
 .about-avatar-wrapper:hover {
@@ -1231,7 +1232,9 @@ footer p {
 .about-avatar-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  transform: scale(1.22); /* Zoom out slightly so full face, hair, and shoulders fit */
+  transform-origin: center center;
 }
 
 .about-headline {
