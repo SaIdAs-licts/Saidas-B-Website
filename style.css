@@ -2032,21 +2032,15 @@ footer p {
   .hero-peekaboo {
     top: auto;
     bottom: 0;
-    transform: translateX(80%); /* Default trigger state on mobile */
+    transform: translateX(100%); /* Default: completely off-screen on mobile */
     width: 240px;
     height: 240px;
     z-index: 10;
-    pointer-events: auto; /* Enable tap/touch interaction */
+    pointer-events: none; /* Prevent blocking any taps on mobile */
   }
 
   .hero.active .hero-peekaboo {
     animation: peekaboo-entry-mobile 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .hero-peekaboo:hover,
-  .hero-peekaboo:active {
-    transform: translateX(27%) !important;
-    animation: none !important;
   }
 
   @keyframes peekaboo-entry-mobile {
@@ -2060,7 +2054,7 @@ footer p {
       transform: translateX(27%); /* Hold */
     }
     100% {
-      transform: translateX(80%); /* Slide back to edge trigger state */
+      transform: translateX(100%); /* Disappear completely after animation */
     }
   }
   
