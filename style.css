@@ -486,6 +486,7 @@ ul {
   padding-top: 100px;
   padding-bottom: 70px;
   background-color: var(--bg-neon); /* Neon green Hero */
+  overflow: hidden; /* Prevent peekaboo image from stretching the viewport horizontally */
 }
 
 .hero-container {
