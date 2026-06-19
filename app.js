@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- 3. Typing Effect (Hero) ---
-    const roles = ["Aspiring Analyst", "Finance Master", "Creative Explorer", "Data Enthusiast", "Technical Writer"];
+    const roles = ["Aspiring Analyst", "Finance", "Creative Explorer", "Data Enthusiast"];
     let roleIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
