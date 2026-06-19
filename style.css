@@ -620,7 +620,7 @@ ul {
 
 /* About Section */
 .about {
-  padding: 80px 0 0 0;
+  padding: 140px 0 0 0;
   background-color: var(--bg-light); /* Warm neutral light background */
   border-top: var(--border-width) solid var(--border-color);
 }
