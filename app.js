@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabMap = {
         '#hero': ['#hero'],
         '#about': ['#about'],
-        '#skills': ['#skills', '#services'],
         '#projects': ['#projects'],
         '#hobbies': ['#hobbies'],
         '#blog': ['#blog'],
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add CSS classes dynamically to initialize tab sections
     document.body.classList.add('js-enabled');
-    const allTabSections = document.querySelectorAll('header.hero, section.about, section.skills, section.services, section.projects, section.hobbies, section.blog, section.contact');
+    const allTabSections = document.querySelectorAll('header.hero, section.about, section.projects, section.hobbies, section.blog, section.contact');
     
     allTabSections.forEach(section => {
         section.classList.add('tab-hidden');
@@ -46,15 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.classList.add('active');
                     const revealsInside = el.querySelectorAll('.reveal');
                     revealsInside.forEach(r => r.classList.add('active'));
-                    
-                    // Special case for skills progress bars
-                    if (selector === '#skills') {
-                        const skillBars = el.querySelectorAll('.progress-line span');
-                        skillBars.forEach(bar => {
-                            const width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
-                            bar.style.width = width;
-                        });
-                    }
                 }, 50);
             }
         });
@@ -171,21 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 4. Intersection Observer for Scroll Animations ---
     const reveals = document.querySelectorAll('.reveal');
-    const skillBars = document.querySelectorAll('.progress-line span');
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                
-                // Animate skill bars specifically when skills section comes in view
-                if (entry.target.id === 'skills' || entry.target.classList.contains('skills')) {
-                    skillBars.forEach(bar => {
-                        const width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
-                        bar.style.width = width;
-                    });
-                }
-                
                 // Stop observing once revealed
                 observer.unobserve(entry.target);
             }
