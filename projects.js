@@ -12,7 +12,7 @@ const projectsData = [
         industry: 'FINANCE / ACCOUNTING',
         indexNum: '01',
         icon: 'fa-book',
-        bgGradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
+        bgGradient: 'linear-gradient(135deg, #0d2621, #134e42)',
         accentColor: '#38ef7d',
         demoUrl: 'https://saidas-licts.github.io/book-keeping/',
         githubUrl: 'https://github.com/SaIdAs-licts/book-keeping',
@@ -41,7 +41,7 @@ const projectsData = [
         industry: 'FINANCE / EQUITIES',
         indexNum: '02',
         icon: 'fa-chart-line',
-        bgGradient: 'linear-gradient(135deg, #00c6ff, #0072ff)',
+        bgGradient: 'linear-gradient(135deg, #061a30, #0c3866)',
         accentColor: '#00c6ff',
         demoUrl: 'https://stock-watch-dnbkiy952-saidas-licts-projects.vercel.app/',
         githubUrl: 'https://github.com/SaIdAs-licts/Stock-Watch',
@@ -58,7 +58,7 @@ const projectsData = [
             stat1Label: 'Update Latency',
             stat2Val: 'Real-Time',
             stat2Label: 'Equities Tracked',
-            previewBadge: 'React Dashboard'
+            previewBadge: 'React Terminal'
         }
     },
     {
@@ -70,8 +70,8 @@ const projectsData = [
         industry: 'OPERATIONS / RESEARCH',
         indexNum: '03',
         icon: 'fa-project-diagram',
-        bgGradient: 'linear-gradient(135deg, #e96443, #904e95)',
-        accentColor: '#e96443',
+        bgGradient: 'linear-gradient(135deg, #2b112c, #5c225f)',
+        accentColor: '#f857a6',
         demoUrl: '',
         githubUrl: '',
         brief: 'Social Cost Benefit Analysis (SCBA) & 48-Month Vensim Dynamic Simulation Model evaluating small-scale dairy farming economic viability.',
@@ -87,7 +87,7 @@ const projectsData = [
             stat1Label: 'Simulated Horizon',
             stat2Val: '±10%',
             stat2Label: 'Sensitivity Range',
-            previewBadge: 'Research Project'
+            previewBadge: 'Research Model'
         }
     },
     {
@@ -99,8 +99,8 @@ const projectsData = [
         industry: 'OPERATIONS / AUDIT',
         indexNum: '04',
         icon: 'fa-industry',
-        bgGradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
-        accentColor: '#11998e',
+        bgGradient: 'linear-gradient(135deg, #2a2007, #594411)',
+        accentColor: '#ffd200',
         demoUrl: '',
         githubUrl: '',
         brief: 'Plant operations audit, Bill of Materials (BOM) re-engineering, and working capital optimization during apprenticeship at Kerala State Drugs & Pharmaceutical Ltd.',
@@ -128,7 +128,7 @@ const projectsData = [
         industry: 'DATA & QUANT',
         indexNum: '05',
         icon: 'fa-calculator',
-        bgGradient: 'linear-gradient(135deg, #8E2DE2, #4A00E0)',
+        bgGradient: 'linear-gradient(135deg, #18092d, #3c146e)',
         accentColor: '#8E2DE2',
         demoUrl: '',
         githubUrl: '',
@@ -145,7 +145,7 @@ const projectsData = [
             stat1Label: 'DCF Engine',
             stat2Val: 'Automated',
             stat2Label: 'Sensitivity Grid',
-            previewBadge: 'Quant Model'
+            previewBadge: 'Quant Code'
         }
     }
 ];
@@ -171,7 +171,6 @@ class ProjectsEngine {
     init() {
         this.renderDomStructure();
         this.bindEvents();
-        // Delay slightly for DOM layout calculation
         setTimeout(() => {
             this.updateCarousel(false);
         }, 60);
@@ -260,12 +259,12 @@ class ProjectsEngine {
             card.dataset.index = idx;
             card.dataset.id = proj.id;
 
+            const mockupHtml = this.getMockupHtml(proj);
+
             card.innerHTML = `
                 <div class="card-inner-frame" style="background: ${proj.bgGradient}">
                     <div class="card-media-content">
-                        <div class="media-icon-badge">
-                            <i class="fas ${proj.icon}"></i>
-                        </div>
+                        ${mockupHtml}
                         <div class="media-badge-tag">${proj.storytelling.previewBadge}</div>
                         <div class="media-hover-overlay">
                             <span class="hover-view-tag">OPEN CASE STUDY <i class="fas fa-arrow-right"></i></span>
@@ -281,18 +280,146 @@ class ProjectsEngine {
         });
     }
 
+    getMockupHtml(proj) {
+        switch (proj.id) {
+            case 'bookkeeping':
+                return `
+                    <div class="editorial-mockup mockup-bookkeeping">
+                        <div class="mockup-window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="mockup-title font-mono">digital-ledger-app v2.4</span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="mockup-stats-row">
+                                <div class="mockup-chip"><span class="chip-lbl">REVENUE</span><span class="chip-val green font-mono">+$42,850</span></div>
+                                <div class="mockup-chip"><span class="chip-lbl">EXPENSES</span><span class="chip-val red font-mono">-$14,200</span></div>
+                                <div class="mockup-chip"><span class="chip-lbl">NET LEDGER</span><span class="chip-val accent font-mono">+$28,650</span></div>
+                            </div>
+                            <div class="mockup-table-preview font-mono">
+                                <div class="table-row head"><span>DATE</span><span>DESC</span><span>TYPE</span><span>AMT</span></div>
+                                <div class="table-row"><span>09/14</span><span>Client Retainer</span><span>CR</span><span class="green">+$12.5k</span></div>
+                                <div class="table-row"><span>09/12</span><span>Server Hosting</span><span>DR</span><span class="red">-$450</span></div>
+                                <div class="table-row"><span>09/10</span><span>Equip Audit</span><span>DR</span><span class="red">-$1.2k</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            case 'stockwatch':
+                return `
+                    <div class="editorial-mockup mockup-stockwatch">
+                        <div class="mockup-window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="mockup-title font-mono">equity-terminal // market feed</span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="stock-ticker-bar font-mono">
+                                <span class="symb">AAPL <span class="price">$224.50</span> <span class="chg green">+2.4% ↑</span></span>
+                                <span class="symb">NVDA <span class="price">$118.20</span> <span class="chg green">+4.1% ↑</span></span>
+                                <span class="symb">TSLA <span class="price">$245.10</span> <span class="chg red">-1.2% ↓</span></span>
+                            </div>
+                            <div class="stock-chart-svg">
+                                <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                                    <path d="M0,60 Q40,40 80,55 T160,25 T240,35 T300,10" fill="none" stroke="#00c6ff" stroke-width="2.5"/>
+                                    <path d="M0,60 Q40,40 80,55 T160,25 T240,35 T300,10 L300,80 L0,80 Z" fill="rgba(0,198,255,0.12)"/>
+                                    <circle cx="300" cy="10" r="3.5" fill="#00c6ff"/>
+                                </svg>
+                            </div>
+                            <div class="mockup-watch-list font-mono">
+                                <span>EQUITIES WATCHLIST</span>
+                                <span class="status-live">● LIVE TICKER</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            case 'dairy-scba':
+                return `
+                    <div class="editorial-mockup mockup-dairy">
+                        <div class="mockup-window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="mockup-title font-mono">vensim-dynamic-model // 48m</span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="sim-nodes-flow font-mono">
+                                <span class="sim-node">Feed Stock</span> <span class="arr">➔</span>
+                                <span class="sim-node active">Yield Rate</span> <span class="arr">➔</span>
+                                <span class="sim-node">NPV ($)</span>
+                            </div>
+                            <div class="scba-chart-svg">
+                                <svg viewBox="0 0 300 70" preserveAspectRatio="none">
+                                    <path d="M0,55 Q75,45 150,28 T300,12" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+                                    <path d="M0,55 Q75,35 150,18 T300,5" fill="none" stroke="#f857a6" stroke-width="1.8" stroke-dasharray="3,3"/>
+                                    <path d="M0,55 Q75,55 150,42 T300,25" fill="none" stroke="#ff5858" stroke-width="1.8" stroke-dasharray="3,3"/>
+                                </svg>
+                            </div>
+                            <div class="sim-legend font-mono">
+                                <span><i class="dot-lgd" style="background:#ffffff"></i> Base NPV</span>
+                                <span><i class="dot-lgd" style="background:#f857a6"></i> ±10% Sensitivity</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            case 'industrial-audit':
+                return `
+                    <div class="editorial-mockup mockup-audit">
+                        <div class="mockup-window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="mockup-title font-mono">ksdp-plant-audit // bom-re-eng</span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="audit-pipeline font-mono">
+                                <div class="pipe-step done"><span>Production</span><i class="fas fa-check"></i></div>
+                                <div class="pipe-step done"><span>Purchase</span><i class="fas fa-check"></i></div>
+                                <div class="pipe-step active"><span>BOM Audit</span><i class="fas fa-sync"></i></div>
+                            </div>
+                            <div class="audit-metrics-strip font-mono">
+                                <div class="a-metric">
+                                    <span class="m-val accent">99.4%</span>
+                                    <span class="m-lbl">BOM ACCURACY</span>
+                                </div>
+                                <div class="a-metric">
+                                    <span class="m-val green">-14.2%</span>
+                                    <span class="m-lbl">BATCH WASTAGE</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            case 'quant-valuation':
+                return `
+                    <div class="editorial-mockup mockup-quant">
+                        <div class="mockup-window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="mockup-title font-mono">quant_dcf_valuation.py</span>
+                        </div>
+                        <div class="mockup-body font-mono">
+                            <div class="code-line"><span class="kwd">def</span> <span class="fn">dcf_model</span>(cash_flows, wacc, g):</div>
+                            <div class="code-line indent"><span class="var">pv</span> = sum([cf / ((1 + wacc)**i) <span class="kwd">for</span> i, cf <span class="kwd">in</span> enumerate(cf_list)])</div>
+                            <div class="code-line indent"><span class="var">tv</span> = (cash_flows[-1] * (1 + g)) / (wacc - g)</div>
+                            <div class="code-line indent"><span class="kwd">return</span> pv + (tv / ((1 + wacc)**len(cf_list)))</div>
+                            <div class="code-result"><span>>> INTRINSIC VALUE:</span> <span class="val-target">$184.20 / share</span></div>
+                        </div>
+                    </div>
+                `;
+
+            default:
+                return `<div class="media-icon-badge"><i class="fas ${proj.icon}"></i></div>`;
+        }
+    }
+
     bindEvents() {
         const filterContainer = document.getElementById('projects-filter-pills');
         const viewport = document.getElementById('projects-viewport');
 
-        // Filter button clicks
         if (filterContainer) {
             filterContainer.addEventListener('click', (e) => {
                 const btn = e.target.closest('.filter-btn');
                 if (!btn) return;
                 const cat = btn.dataset.category;
                 
-                // If clicking already active filter, clear to ALL
                 if (this.activeFilter === cat && cat !== 'ALL') {
                     this.applyFilter('ALL');
                 } else {
@@ -301,7 +428,6 @@ class ProjectsEngine {
             });
         }
 
-        // Viewport click event (Card snapping & Drawer opening)
         if (viewport) {
             viewport.addEventListener('click', (e) => {
                 const slot = e.target.closest('.project-card-slot');
@@ -309,15 +435,12 @@ class ProjectsEngine {
                 const clickedIdx = parseInt(slot.dataset.index, 10);
 
                 if (clickedIdx === this.activeIndex) {
-                    // Click active card -> Open Case Study Drawer
                     this.openDrawer(this.filteredProjects[this.activeIndex]);
                 } else {
-                    // Click side card -> Snap to center
                     this.goToIndex(clickedIdx);
                 }
             });
 
-            // Wheel / Trackpad horizontal delta hijacking
             viewport.addEventListener('wheel', (e) => {
                 if (this.isDrawerOpen) return;
                 
@@ -334,7 +457,6 @@ class ProjectsEngine {
                 }
             }, { passive: false });
 
-            // Touch / Drag events
             viewport.addEventListener('pointerdown', (e) => {
                 if (this.isDrawerOpen) return;
                 this.isDragging = true;
@@ -362,7 +484,6 @@ class ProjectsEngine {
             });
         }
 
-        // Custom Cursor Interaction Hooks
         const cursor = document.getElementById('custom-cursor');
         if (cursor && viewport) {
             viewport.addEventListener('mousemove', (e) => {
@@ -389,7 +510,6 @@ class ProjectsEngine {
             });
         }
 
-        // Handle window resize recalculation
         window.addEventListener('resize', () => {
             this.updateCarousel(false);
         });
@@ -398,7 +518,6 @@ class ProjectsEngine {
     applyFilter(cat) {
         this.activeFilter = cat;
         
-        // Update filter buttons UI
         const btns = document.querySelectorAll('#projects-filter-pills .filter-btn');
         btns.forEach(btn => {
             if (btn.dataset.category === cat) {
@@ -408,7 +527,6 @@ class ProjectsEngine {
             }
         });
 
-        // Filter projects
         if (cat === 'ALL') {
             this.filteredProjects = [...this.projects];
         } else {
@@ -417,7 +535,6 @@ class ProjectsEngine {
 
         this.activeIndex = 0;
 
-        // FLIP animation effect on track container
         const track = document.getElementById('projects-track');
         if (track) {
             track.style.opacity = '0';
@@ -456,7 +573,6 @@ class ProjectsEngine {
 
         const currentProj = this.filteredProjects[this.activeIndex];
 
-        // 1. Update Title above Active Card (Vertical Slide Fade Animation)
         const titleEl = document.getElementById('active-project-title');
         if (titleEl && currentProj) {
             if (animate) {
@@ -470,7 +586,6 @@ class ProjectsEngine {
             }
         }
 
-        // 2. Update Central Metadata Underneath Frame
         const indexDotEl = document.getElementById('active-index-dot');
         const industryEl = document.getElementById('active-meta-industry');
         const roleEl = document.getElementById('active-meta-role');
@@ -489,7 +604,6 @@ class ProjectsEngine {
             roleEl.textContent = `ROLE: ${currentProj.roleTags.join(' | ')}`;
         }
 
-        // 3. Compute Translation for 3-Item Viewport Focus
         slots.forEach((slot, idx) => {
             slot.classList.remove('is-active', 'is-prev', 'is-next', 'is-far');
             
@@ -504,7 +618,6 @@ class ProjectsEngine {
             }
         });
 
-        // Center calculation
         if (track) {
             const viewport = document.getElementById('projects-viewport');
             const activeSlot = slots[this.activeIndex];
@@ -525,7 +638,6 @@ class ProjectsEngine {
 
         this.isDrawerOpen = true;
 
-        // Build Onda Studio Case Study HTML
         inner.innerHTML = `
             <div class="drawer-header-bar">
                 <button class="btn-back-projects" id="close-drawer-btn">
@@ -540,8 +652,8 @@ class ProjectsEngine {
                 <div class="hero-category-tag font-mono">${proj.category}</div>
                 <h1 class="case-study-title">${proj.title}</h1>
                 <div class="case-study-banner" style="background: ${proj.bgGradient}">
-                    <div class="banner-center-icon">
-                        <i class="fas ${proj.icon}"></i>
+                    <div class="banner-mockup-wrapper">
+                        ${this.getMockupHtml(proj)}
                     </div>
                 </div>
             </div>
@@ -630,12 +742,10 @@ class ProjectsEngine {
         document.body.style.overflow = 'hidden';
         drawer.scrollTop = 0;
 
-        // Bind Close Drawer Button
         document.getElementById('close-drawer-btn').addEventListener('click', () => {
             this.closeDrawer();
         });
 
-        // Bind More Info Toggle Accordion
         const moreInfoBtn = document.getElementById('more-info-toggle-btn');
         const moreInfoContent = document.getElementById('more-info-content');
         const chev = document.getElementById('more-info-chevron');
@@ -652,7 +762,6 @@ class ProjectsEngine {
             }
         });
 
-        // Bind Next Project Trigger
         document.getElementById('case-next-trigger').addEventListener('click', () => {
             const nextIdx = (this.activeIndex + 1) % this.filteredProjects.length;
             this.goToIndex(nextIdx);
@@ -675,9 +784,7 @@ class ProjectsEngine {
     }
 }
 
-// Global initialization window listener
 window.addEventListener('DOMContentLoaded', () => {
-    // Instantiate engine after SPA tabs initialize
     setTimeout(() => {
         window.projectsEngine = new ProjectsEngine();
     }, 100);
