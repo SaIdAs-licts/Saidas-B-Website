@@ -458,76 +458,115 @@
         <!-- Rendered dynamically by projects.js -->
     </section>
 
-    <!-- Hobbies & Art Folio Section -->
+    <!-- Hobbies & Art Folio Section (Oumahi 3D Sphere Architecture) -->
     <section id="hobbies" class="hobbies reveal">
-        <div class="ambient-glow glow-3"></div>
-        <div class="container">
-            <h2 class="section-title">Creative <span class="highlight">Folios</span></h2>
-            <p class="section-subtitle">Beyond spreadsheets and code, I express my passion through diverse artistic mediums.</p>
+        <!-- 3D WebGL Canvas Container -->
+        <div id="hobbies-canvas-container" class="hobbies-canvas-container"></div>
+
+        <!-- HUD Layer -->
+        <div class="hobbies-hud">
+            <!-- Left-Hand Vertical Category Switcher -->
+            <div class="hobbies-cat-switcher">
+                <button class="hobby-cat-pill active" data-category="philately">
+                    <span class="pill-dot"></span>
+                    <span>Philately & Numismatics</span>
+                </button>
+                <button class="hobby-cat-pill" data-category="sketching">
+                    <span class="pill-dot"></span>
+                    <span>Sketching & Art</span>
+                </button>
+                <button class="hobby-cat-pill" data-category="photo">
+                    <span class="pill-dot"></span>
+                    <span>Photography</span>
+                </button>
+            </div>
+
+            <!-- Top Right HUD Info -->
+            <div class="hobbies-hud-top-right">
+                <span class="hud-tag">[ 3D SPHERE ARCHIVE ]</span>
+                <span id="hobbies-count" class="hud-count">36 ARTIFACTS</span>
+            </div>
+
+            <!-- Bottom Left HUD Branding -->
+            <div class="hobbies-hud-bottom-left">
+                <span class="hud-branding">OUMAHI-INSPIRED 3D ARCHIVE // SAIDAS B</span>
+            </div>
+
+            <!-- Bottom Right Controls Hint -->
+            <div class="hobbies-hud-bottom-right">
+                <span class="hud-hint"><i class="fas fa-hand-pointer"></i> DRAG TO ROTATE • CLICK CARD FOR SPECS</span>
+            </div>
+        </div>
+
+        <!-- Overlay Layer: Fullscreen Detail View Modal (Oumahi Grid Match) -->
+        <div id="hobbies-modal" class="hobbies-modal" style="display: none;">
+            <div class="hobbies-modal-backdrop"></div>
             
-            <div class="tabs-container">
-                <div class="tab-headers">
-                    <button class="tab-btn active" data-tab="art"><i class="fas fa-paint-brush"></i> Art & Painting</button>
-                    <button class="tab-btn" data-tab="photo"><i class="fas fa-camera"></i> Photography</button>
-                    <button class="tab-btn" data-tab="collect"><i class="fas fa-stamp"></i> Coins & Stamps</button>
-                    <button class="tab-btn" data-tab="blender"><i class="fas fa-cube"></i> Blender 3D</button>
+            <div class="hobbies-modal-container">
+                <!-- Modal Top Header Bar -->
+                <div class="hobbies-modal-header">
+                    <div class="modal-header-left">
+                        <span id="modal-header-path" class="modal-path-indicator">PHILATELY & NUMISMATICS // 01 / 36</span>
+                    </div>
+                    <button id="hobbies-modal-close" class="modal-close-btn" aria-label="Close Modal">
+                        <span>CLOSE</span>
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                
-                <div class="tab-content glass-card">
-                    <!-- Art Tab -->
-                    <div class="tab-pane active" id="tab-art">
-                        <div class="folio-layout">
-                            <div class="folio-text">
-                                <h3>Visual Artistry</h3>
-                                <p>I explore drawing, painting, and mixing different physical mediums. Art allows me to break boundaries entirely away from rigid logic systems.</p>
-                                <a href="https://instagram.com/illu_min_art" target="_blank" class="instagram-link"><i class="fab fa-instagram"></i> @illu_min_art</a>
-                            </div>
-                            <div class="folio-gallery">
-                                <img src="assets/images/art.png" alt="Painting Sample" class="gallery-hero">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Photography Tab -->
-                    <div class="tab-pane" id="tab-photo">
-                        <div class="folio-layout">
-                            <div class="folio-text">
-                                <h3>Through the Lens</h3>
-                                <p>Capturing transient moments in time. I focus on moody, highly-composed shots exploring the geometry of nature and urban constructs.</p>
-                                <a href="https://instagram.com/illu_shutter_min_buggy" target="_blank" class="instagram-link"><i class="fab fa-instagram"></i> @illu_shutter_min_buggy</a>
-                            </div>
-                            <div class="folio-gallery">
-                                <img src="assets/images/photo.png" alt="Photography Sample" class="gallery-hero">
+
+                <!-- Main 2-Column Split Stage -->
+                <div class="hobbies-modal-stage">
+                    <!-- Left Column: Item Presentation Frame with 3D Tilt -->
+                    <div class="modal-art-column">
+                        <button id="modal-prev-btn" class="modal-nav-arrow arrow-left" aria-label="Previous Item">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        
+                        <div id="modal-art-frame" class="modal-art-frame">
+                            <div class="art-frame-inner">
+                                <span id="modal-art-badge" class="art-frame-badge">VINTAGE STAMP</span>
+                                <h3 id="modal-art-title" class="art-frame-title">King George VI 1940s Deccan Postal Issue</h3>
+                                <div id="modal-art-icon" class="art-frame-icon-wrap">
+                                    <i class="fas fa-stamp"></i>
+                                </div>
+                                <span id="modal-art-era" class="art-frame-era">1940–1947 (Late Colonial Era)</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Collections Tab -->
-                    <div class="tab-pane" id="tab-collect">
-                        <div class="folio-layout">
-                            <div class="folio-text">
-                                <h3>Relics of the Past</h3>
-                                <p>My vast collection of historical coins and vintage stamps. It's a hands-on history lesson wrapped in aesthetics.</p>
-                                <a href="https://instagram.com/illu_min_relics" target="_blank" class="instagram-link"><i class="fab fa-instagram"></i> @illu_min_relics</a>
-                            </div>
-                            <div class="folio-gallery">
-                                <img src="assets/images/coins.png" alt="Stamp and Coin Sample" class="gallery-hero">
-                            </div>
-                        </div>
+
+                        <button id="modal-next-btn" class="modal-nav-arrow arrow-right" aria-label="Next Item">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
                     </div>
 
-                    <!-- Blender Tab -->
-                    <div class="tab-pane" id="tab-blender">
-                        <div class="folio-layout">
-                            <div class="folio-text">
-                                <h3>3D Modeling & Animation</h3>
-                                <p>Using Blender to construct 3D environments and low-poly assets. This is the stepping stone for a future indie game development project with a close friend.</p>
-                                <a href="https://instagram.com/i_l_l_u_m_i_n" target="_blank" class="instagram-link"><i class="fab fa-instagram"></i> @i_l_l_u_m_i_n</a>
-                            </div>
-                            <div class="folio-gallery">
-                                <img src="assets/images/blender.png" alt="Blender Animation Sample" class="gallery-hero">
-                            </div>
+                    <!-- Right Column: Editorial Specs Panel -->
+                    <div class="modal-specs-column">
+                        <div class="specs-header-group">
+                            <span class="specs-kicker">ARCHIVAL ARTIFACT SPECS</span>
+                            <h2 id="modal-spec-title" class="specs-main-title">King George VI 1940s Deccan Postal Issue</h2>
                         </div>
+
+                        <p id="modal-spec-narrative" class="specs-narrative">
+                            Issued during the twilight years of British rule in India, this 1940s postal stamp features the crisp profile of King George VI surrounded by intricate floral filigree motifs.
+                        </p>
+
+                        <div id="modal-spec-list" class="specs-list-grid">
+                            <!-- Injected dynamically by JS -->
+                        </div>
+
+                        <div class="specs-action-row">
+                            <a href="https://instagram.com/i_l_l_u_m_i_n" target="_blank" class="btn btn-primary modal-action-btn">
+                                <span>INQUIRE / VIEW ARCHIVE</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Sticky Filmstrip Carousel -->
+                <div class="hobbies-modal-filmstrip">
+                    <div class="filmstrip-label">COLLECTION FILMSTRIP</div>
+                    <div id="modal-filmstrip-inner" class="filmstrip-inner">
+                        <!-- Thumbnails injected dynamically -->
                     </div>
                 </div>
             </div>
@@ -628,7 +667,10 @@
         </div>
     </footer>
 
-    <!-- App Logic -->
+    <!-- App Logic & 3D Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="hobbiesData.js"></script>
+    <script src="hobbies.js"></script>
     <script src="projects.js"></script>
     <script src="app.js"></script>
     <script type="module">

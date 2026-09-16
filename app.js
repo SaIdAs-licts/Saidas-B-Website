@@ -61,6 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (activeHash === '#projects' && window.projectsEngine) {
                         window.projectsEngine.updateCarousel(false);
                     }
+                    if (activeHash === '#hobbies' && window.hobbiesEngine) {
+                        window.hobbiesEngine.init();
+                        window.hobbiesEngine.onTabMount();
+                    }
                 }, 50);
             }
         });
