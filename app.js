@@ -28,10 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update navbar theme class dynamically to blend with background
         const navbarEl = document.getElementById('navbar');
+        const activeTheme = `theme-${activeHash.replace('#', '')}`;
+        
+        document.body.classList.remove('theme-hero', 'theme-about', 'theme-projects', 'theme-hobbies', 'theme-blog', 'theme-contact');
+        document.body.classList.add(activeTheme);
+
         if (navbarEl) {
             navbarEl.classList.remove('theme-hero', 'theme-about', 'theme-projects', 'theme-hobbies', 'theme-blog', 'theme-contact');
-            const themeClass = `theme-${activeHash.replace('#', '')}`;
-            navbarEl.classList.add(themeClass);
+            navbarEl.classList.add(activeTheme);
         }
         
         // Hide all sections, remove reveal actives so they can animate again

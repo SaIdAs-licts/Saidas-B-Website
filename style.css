@@ -699,6 +699,21 @@ body.theme-projects, html:has(body.theme-projects) {
   height: 100% !important;
 }
 
+/* =========================================================================
+   Onda Studio Redesigned Projects Section & Case Study Presentation
+   ========================================================================= */
+
+/* Root-Level Screen Isolation & Footer Suppression (Projects Tab Only) */
+body.theme-projects footer {
+  display: none !important;
+}
+
+body.theme-projects, html:has(body.theme-projects) {
+  overflow: hidden !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+
 #projects {
   position: relative;
   width: 100vw;
@@ -708,10 +723,10 @@ body.theme-projects, html:has(body.theme-projects) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: calc(var(--nav-height, 64px) + 8px);
+  padding-top: calc(var(--nav-height, 68px) + 16px);
   padding-bottom: 16px;
-  padding-left: 2vw;
-  padding-right: 2vw;
+  padding-left: clamp(1rem, 3vw, 2.5rem);
+  padding-right: clamp(1rem, 3vw, 2.5rem);
   box-sizing: border-box;
   background-color: var(--bg-light);
   border-top: var(--border-width) solid var(--border-color);
@@ -728,17 +743,17 @@ body.theme-projects, html:has(body.theme-projects) {
   overflow: hidden;
 }
 
-/* Tier 1: Header & Category Filter Bar (Fixed Height 36px) */
+/* Tier 1: Filter Bar (Fixed Height 42px) */
 .projects-filter-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  height: 36px;
-  min-height: 36px;
+  height: 42px;
+  min-height: 42px;
   border-bottom: var(--border-width) solid var(--border-color);
   padding-bottom: 6px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   gap: 1rem;
   z-index: 40;
   background-color: var(--bg-light);
@@ -763,10 +778,10 @@ body.theme-projects, html:has(body.theme-projects) {
   background: var(--bg-card);
   color: var(--text-dark);
   border: var(--border-width) solid var(--border-color);
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.95rem;
   border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   box-shadow: 2px 2px 0px var(--border-color);
@@ -796,12 +811,12 @@ body.theme-projects, html:has(body.theme-projects) {
   display: inline-flex;
 }
 
-/* Tier 2: Project Title Header (Fixed Height 44px) */
+/* Tier 2: Project Title Row (Fixed Height 46px) */
 .projects-active-header {
   flex-shrink: 0;
-  height: 44px;
-  min-height: 44px;
-  max-height: 44px;
+  height: 46px;
+  min-height: 46px;
+  max-height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -868,7 +883,7 @@ body.theme-projects, html:has(body.theme-projects) {
 
 /* Clamped Slot Dimensions */
 .project-card-slot.is-active {
-  height: clamp(260px, 42dvh, 400px);
+  height: clamp(240px, 40dvh, 380px);
   width: clamp(420px, 48vw, 680px);
   opacity: 1.0;
   transform: scale(1.0);
@@ -877,7 +892,7 @@ body.theme-projects, html:has(body.theme-projects) {
 
 .project-card-slot.is-prev,
 .project-card-slot.is-next {
-  height: clamp(220px, 35dvh, 340px);
+  height: clamp(200px, 32dvh, 310px);
   width: clamp(220px, 22vw, 320px);
   opacity: 0.35;
   transform: scale(0.85);
@@ -885,7 +900,7 @@ body.theme-projects, html:has(body.theme-projects) {
 }
 
 .project-card-slot.is-far {
-  height: clamp(220px, 35dvh, 340px);
+  height: clamp(200px, 32dvh, 310px);
   width: clamp(220px, 22vw, 320px);
   opacity: 0.1;
   transform: scale(0.75);
@@ -1000,20 +1015,20 @@ body.theme-projects, html:has(body.theme-projects) {
   z-index: 5;
 }
 
-/* Tier 4: Metadata Footer (Fixed Height 40px) */
+/* Tier 4: Bottom Metadata Row (Fixed Height 44px) */
 .projects-active-meta {
   flex-shrink: 0;
-  height: 40px;
+  height: 44px;
   margin-top: 8px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   max-width: clamp(420px, 48vw, 680px);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 8px;
 }
 
 .active-index-dot {
