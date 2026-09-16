@@ -689,20 +689,19 @@ ul {
    Onda Studio Redesigned Projects Section & Case Study Presentation
    ========================================================================= */
 
-.projects {
-  height: 100vh;
+#projects {
   height: 100dvh;
-  max-height: 100vh;
   max-height: 100dvh;
+  width: 100vw;
   overflow: hidden;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: calc(var(--nav-height, 64px) + 8px) 3vw 24px 3vw;
   box-sizing: border-box;
-  padding: calc(var(--nav-height, 70px) + 12px) 2rem 1.5rem 2rem;
   background-color: var(--bg-light);
   border-top: var(--border-width) solid var(--border-color);
-  position: relative;
 }
 
 .projects-container {
@@ -716,18 +715,20 @@ ul {
   overflow: hidden;
 }
 
-/* 1. Header & Category Filter Bar */
+/* Tier 1: Header & Category Filter Bar */
 .projects-filter-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 0.8rem;
+  flex-shrink: 0;
+  height: 44px;
+  min-height: 44px;
   border-bottom: var(--border-width) solid var(--border-color);
-  flex-wrap: wrap;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
   gap: 1rem;
   z-index: 40;
   background-color: var(--bg-light);
-  flex-shrink: 0;
 }
 
 .filter-label .mono-tag {
@@ -749,10 +750,10 @@ ul {
   background: var(--bg-card);
   color: var(--text-dark);
   border: var(--border-width) solid var(--border-color);
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.95rem;
   border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   box-shadow: 2px 2px 0px var(--border-color);
@@ -782,41 +783,46 @@ ul {
   display: inline-flex;
 }
 
-/* 2. Showcase Header (Title above active card) */
+/* Tier 2: Project Title Header (Fixed Height 48px) */
 .projects-active-header {
-  text-align: center;
-  padding: 0.6rem 0;
   flex-shrink: 0;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.8rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .active-project-title {
   font-family: var(--font-heading);
-  font-size: 1.95rem;
-  font-weight: 600;
+  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+  font-weight: 500;
   color: var(--text-dark);
   letter-spacing: -0.5px;
   line-height: 1.2;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  text-align: center;
   margin: 0;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
 }
 
 .active-project-title.animating-title {
-  transform: translateY(12px);
+  transform: translateY(8px);
   opacity: 0;
 }
 
-/* 3. 3-Item Viewport Carousel Area */
+/* Tier 3: 3-Card Carousel Track (Flex: 1) */
 .projects-viewport {
-  width: 100%;
   flex: 1;
-  display: flex;
-  align-items: center;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
   overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: center;
   user-select: none;
   touch-action: pan-y;
   padding: 0.5rem 0;
@@ -829,7 +835,7 @@ ul {
 .projects-track {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: clamp(20px, 3.5vw, 48px);
   transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
   will-change: transform;
   height: 100%;
@@ -838,39 +844,33 @@ ul {
 .project-card-slot {
   flex-shrink: 0;
   position: relative;
-  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1);
   transform-origin: center center;
   height: 100%;
-  max-height: 390px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
-/* Desktop Slot Sizes */
+/* Slot Sizes with Clamp */
 .project-card-slot.is-active {
-  width: 48vw;
-  max-width: 660px;
-  aspect-ratio: 16 / 10;
-  opacity: 1;
-  transform: scale(1);
-  z-index: 10;
+  width: clamp(480px, 52vw, 760px);
+  opacity: 1.0;
+  transform: scale(1.0);
+  z-index: 20;
 }
 
 .project-card-slot.is-prev,
 .project-card-slot.is-next {
-  width: 22vw;
-  max-width: 300px;
-  aspect-ratio: 16 / 10;
-  opacity: 0.55;
+  width: clamp(240px, 26vw, 360px);
+  opacity: 0.45;
   transform: scale(0.85);
-  z-index: 5;
+  z-index: 10;
 }
 
 .project-card-slot.is-far {
-  width: 22vw;
-  max-width: 300px;
-  aspect-ratio: 16 / 10;
-  opacity: 0.15;
+  width: clamp(240px, 26vw, 360px);
+  opacity: 0.1;
   transform: scale(0.75);
   pointer-events: none;
 }
@@ -878,9 +878,9 @@ ul {
 .card-inner-frame {
   width: 100%;
   height: 100%;
-  border-radius: var(--radius-md);
-  border: var(--border-width) solid var(--border-color);
-  box-shadow: var(--shadow-flat);
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -890,382 +890,116 @@ ul {
 }
 
 .project-card-slot.is-active:hover .card-inner-frame {
-  box-shadow: var(--shadow-flat-hover);
-  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
 }
 
 .card-media-content {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 0;
   position: relative;
-  padding: 1.2rem;
-  color: #ffffff;
+  overflow: hidden;
 }
 
-/* =========================================================================
-   Bespoke Editorial UI Mockup Styles
-   ========================================================================= */
-
-.editorial-mockup {
+/* Edge-to-Edge Full-Bleed Graphic Canvas */
+.edge-canvas {
   width: 100%;
   height: 100%;
-  background: rgba(5, 5, 5, 0.45);
-  backdrop-filter: blur(12px);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.mockup-window-header {
-  height: 28px;
-  padding: 0 0.8rem;
-  background: rgba(5, 5, 5, 0.6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.window-dots {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.window-dots .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-.window-dots .dot.red { background: #ff5f56; }
-.window-dots .dot.yellow { background: #ffbd2e; }
-.window-dots .dot.green { background: #27c93f; }
-
-.mockup-title {
-  font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 0.5px;
-}
-
-.mockup-body {
-  padding: 0.9rem;
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.6rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  color: #ffffff;
+  position: relative;
   overflow: hidden;
 }
 
-/* 1. Bookkeeping Mockup */
-.mockup-stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-}
-
-.mockup-chip {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.4rem 0.5rem;
-  border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.chip-lbl {
-  font-size: 0.55rem;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.5px;
-}
-
-.chip-val {
-  font-size: 0.78rem;
-  font-weight: 700;
-  margin-top: 2px;
-}
-
-.chip-val.green { color: #38ef7d; }
-.chip-val.red { color: #ff5858; }
-.chip-val.accent { color: var(--bg-neon); }
-
-.mockup-table-preview {
-  font-size: 0.62rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  background: rgba(0, 0, 0, 0.25);
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 0.8fr 1.8fr 0.8fr 1fr;
-  color: rgba(255, 255, 255, 0.85);
-  padding-bottom: 0.2rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-}
-
-.table-row.head {
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* 2. Stock Watch Mockup */
-.stock-ticker-bar {
+.canvas-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 0.4rem 0.6rem;
-  border-radius: 5px;
-  font-size: 0.65rem;
-}
-
-.stock-ticker-bar .symb {
-  font-weight: 700;
-}
-
-.stock-ticker-bar .price {
-  color: #ffffff;
-}
-
-.stock-chart-svg {
-  width: 100%;
-  height: 65px;
-}
-
-.mockup-watch-list {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 0.4rem;
-}
-
-.status-live {
-  color: #00c6ff;
-  font-weight: 700;
-}
-
-/* 3. Dairy SCBA Simulation Mockup */
-.sim-nodes-flow {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  font-size: 0.62rem;
-  background: rgba(0,0,0,0.3);
-  padding: 0.4rem;
-  border-radius: 5px;
-}
-
-.sim-node {
-  padding: 0.2rem 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.sim-node.active {
-  background: #f857a6;
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.sim-legend {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.58rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.dot-lgd {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-}
-
-/* 4. Industrial Audit Mockup */
-.audit-pipeline {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.pipe-step {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.35rem;
-  border-radius: 4px;
-  font-size: 0.58rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.pipe-step.done {
-  background: rgba(56, 239, 125, 0.15);
-  border-color: #38ef7d;
-  color: #38ef7d;
-}
-
-.pipe-step.active {
-  background: rgba(255, 210, 0, 0.2);
-  border-color: #ffd200;
-  color: #ffd200;
-}
-
-.audit-metrics-strip {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-}
-
-.a-metric {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 0.4rem 0.6rem;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
-.a-metric .m-val {
-  font-size: 0.9rem;
-  font-weight: 800;
-}
-
-.a-metric .m-lbl {
-  font-size: 0.55rem;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* 5. Quant Python Mockup */
-.mockup-quant .mockup-body {
-  font-size: 0.62rem;
-  line-height: 1.45;
-  color: #e2e8f0;
-}
-
-.code-line { margin-bottom: 2px; }
-.code-line.indent { padding-left: 0.8rem; }
-.kwd { color: #f472b6; font-weight: 700; }
-.fn { color: #60a5fa; font-weight: 700; }
-.var { color: #38bdf8; }
-
-.code-result {
-  margin-top: 0.4rem;
-  padding-top: 0.3rem;
-  border-top: 1px dashed rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.val-target {
-  color: var(--bg-neon);
-  font-weight: 800;
-}
-
-/* Badge Tag & Hover Overlay */
-.media-badge-tag {
-  position: absolute;
-  bottom: 0.8rem;
-  left: 0.8rem;
-  z-index: 10;
-  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
-  text-transform: uppercase;
-  background: rgba(5, 5, 5, 0.85);
-  color: #ffffff;
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
+  z-index: 5;
 }
 
-.media-hover-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(5, 5, 5, 0.4);
-  backdrop-filter: blur(4px);
-  opacity: 0;
+.c-badge {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.c-val.green { color: #38ef7d; }
+.c-val.cyan { color: #00c6ff; }
+.c-val.pink { color: #f857a6; }
+.c-val.gold { color: #ffd200; }
+.c-val.purple { color: #c084fc; }
+
+.canvas-graphic {
+  flex: 1;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease;
-  z-index: 20;
+  margin: 0.8rem 0;
+  position: relative;
 }
 
-.project-card-slot.is-active:hover .media-hover-overlay {
-  opacity: 1;
+.canvas-graphic svg {
+  width: 100%;
+  height: 100%;
+  max-height: 180px;
 }
 
-.hover-view-tag {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--bg-neon);
-  background: var(--text-dark);
-  padding: 0.55rem 1.1rem;
-  border-radius: 999px;
-  border: var(--border-width) solid var(--border-color);
-  box-shadow: var(--shadow-flat-sm);
+.quant-canvas-lines {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 100%;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.q-line.ind { padding-left: 1.2rem; }
+.q-purple { color: #c084fc; font-weight: 700; }
+.q-blue { color: #60a5fa; font-weight: 700; }
+.q-cyan { color: #38bdf8; }
+
+.canvas-bottom {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.card-outer-meta {
-  margin-top: 0.6rem;
-  text-align: center;
-}
-
-.card-outer-index {
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.project-card-slot.is-active .card-outer-meta {
-  display: none;
-}
-
-/* 4. Central Metadata Arrangement (Under active media frame) */
-.projects-active-meta {
-  display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  max-width: 660px;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.65);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 0.6rem;
+  z-index: 5;
+}
+
+/* Tier 4: Metadata Footer (Fixed Height 44px) */
+.projects-active-meta {
+  flex-shrink: 0;
+  height: 44px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  max-width: clamp(480px, 52vw, 760px);
   width: 100%;
   margin: 0 auto;
-  padding-top: 0.8rem;
-  border-top: 1px solid rgba(5, 5, 5, 0.15);
-  gap: 1.5rem;
-  flex-shrink: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 8px;
 }
 
 .active-index-dot {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--text-dark);
 }
@@ -1290,31 +1024,35 @@ ul {
   color: var(--text-muted);
 }
 
-/* Custom Cursor Modifiers for Showcase */
+/* Custom Circular Follower Cursor (Onda Style) */
 #custom-cursor.cursor-open-project {
   width: 90px !important;
   height: 90px !important;
-  background-color: var(--text-dark) !important;
-  color: var(--bg-neon) !important;
-  border: var(--border-width) solid var(--bg-neon);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  background-color: #050505 !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 #custom-cursor.cursor-open-project::after {
-  content: "Open Project";
+  content: "Open Project ↗";
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: center;
+  letter-spacing: 0.05em;
+  color: #ffffff;
 }
 
 #custom-cursor.cursor-chev-left {
   width: 48px !important;
   height: 48px !important;
-  background-color: var(--text-dark) !important;
-  color: var(--bg-neon) !important;
+  background-color: #050505 !important;
+  color: #ffffff !important;
 }
 
 #custom-cursor.cursor-chev-left::after {
@@ -1326,8 +1064,8 @@ ul {
 #custom-cursor.cursor-chev-right {
   width: 48px !important;
   height: 48px !important;
-  background-color: var(--text-dark) !important;
-  color: var(--bg-neon) !important;
+  background-color: #050505 !important;
+  color: #ffffff !important;
 }
 
 #custom-cursor.cursor-chev-right::after {

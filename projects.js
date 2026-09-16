@@ -158,11 +158,9 @@ class ProjectsEngine {
         this.activeFilter = 'ALL';
         this.isDrawerOpen = false;
 
-        // Wheel & Touch Drag State
+        // Wheel & Touch Drag State with 450ms Cooldown Lock
         this.isDragging = false;
         this.startX = 0;
-        this.currentTranslate = 0;
-        this.prevTranslate = 0;
         this.wheelCooldown = false;
 
         this.init();
@@ -182,7 +180,7 @@ class ProjectsEngine {
 
         section.innerHTML = `
             <div class="projects-container">
-                <!-- Header & Category Filter Bar -->
+                <!-- Tier 1: Header & Category Filter Bar -->
                 <div class="projects-filter-bar">
                     <div class="filter-label">
                         <span class="mono-tag font-mono">FILTER BY</span>
@@ -207,19 +205,19 @@ class ProjectsEngine {
                     </div>
                 </div>
 
-                <!-- Showcase Header (Title above active card) -->
+                <!-- Tier 2: Project Title Header (Fixed Height) -->
                 <div class="projects-active-header" id="projects-active-header">
                     <h2 class="active-project-title" id="active-project-title">Digital Bookkeeping System</h2>
                 </div>
 
-                <!-- 3-Item Viewport Carousel Area -->
+                <!-- Tier 3: 3-Item Viewport Carousel Area (Flex: 1) -->
                 <div class="projects-viewport" id="projects-viewport">
                     <div class="projects-track" id="projects-track">
                         <!-- Project Cards rendered dynamically -->
                     </div>
                 </div>
 
-                <!-- Central Metadata Arrangement (Under active media frame) -->
+                <!-- Tier 4: Central Metadata Arrangement (Fixed Bottom Row) -->
                 <div class="projects-active-meta" id="projects-active-meta">
                     <div class="meta-left">
                         <span class="active-index-dot" id="active-index-dot">• 01 / 05</span>
@@ -249,7 +247,7 @@ class ProjectsEngine {
         track.innerHTML = '';
 
         if (this.filteredProjects.length === 0) {
-            track.innerHTML = `<div class="no-projects-msg">No projects match the selected category.</div>`;
+            track.innerHTML = `<div class="no-projects-msg font-mono">No projects match the selected category.</div>`;
             return;
         }
 
@@ -265,14 +263,7 @@ class ProjectsEngine {
                 <div class="card-inner-frame" style="background: ${proj.bgGradient}">
                     <div class="card-media-content">
                         ${mockupHtml}
-                        <div class="media-badge-tag">${proj.storytelling.previewBadge}</div>
-                        <div class="media-hover-overlay">
-                            <span class="hover-view-tag">OPEN CASE STUDY <i class="fas fa-arrow-right"></i></span>
-                        </div>
                     </div>
-                </div>
-                <div class="card-outer-meta">
-                    <span class="card-outer-index">${proj.indexNum}</span>
                 </div>
             `;
 
@@ -284,135 +275,134 @@ class ProjectsEngine {
         switch (proj.id) {
             case 'bookkeeping':
                 return `
-                    <div class="editorial-mockup mockup-bookkeeping">
-                        <div class="mockup-window-header">
-                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                            <span class="mockup-title font-mono">digital-ledger-app v2.4</span>
+                    <div class="edge-canvas canvas-bookkeeping">
+                        <div class="canvas-top font-mono">
+                            <span class="c-badge font-mono">DIGITAL LEDGER SYSTEM</span>
+                            <span class="c-val green font-mono">NET: +$28,650</span>
                         </div>
-                        <div class="mockup-body">
-                            <div class="mockup-stats-row">
-                                <div class="mockup-chip"><span class="chip-lbl">REVENUE</span><span class="chip-val green font-mono">+$42,850</span></div>
-                                <div class="mockup-chip"><span class="chip-lbl">EXPENSES</span><span class="chip-val red font-mono">-$14,200</span></div>
-                                <div class="mockup-chip"><span class="chip-lbl">NET LEDGER</span><span class="chip-val accent font-mono">+$28,650</span></div>
-                            </div>
-                            <div class="mockup-table-preview font-mono">
-                                <div class="table-row head"><span>DATE</span><span>DESC</span><span>TYPE</span><span>AMT</span></div>
-                                <div class="table-row"><span>09/14</span><span>Client Retainer</span><span>CR</span><span class="green">+$12.5k</span></div>
-                                <div class="table-row"><span>09/12</span><span>Server Hosting</span><span>DR</span><span class="red">-$450</span></div>
-                                <div class="table-row"><span>09/10</span><span>Equip Audit</span><span>DR</span><span class="red">-$1.2k</span></div>
-                            </div>
+                        <div class="canvas-graphic">
+                            <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="bkGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#38ef7d" stop-opacity="0.35"/>
+                                        <stop offset="100%" stop-color="#38ef7d" stop-opacity="0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,140 Q80,120 160,80 T320,40 T400,20 L400,180 L0,180 Z" fill="url(#bkGrad)"/>
+                                <path d="M0,140 Q80,120 160,80 T320,40 T400,20" fill="none" stroke="#38ef7d" stroke-width="3"/>
+                                <line x1="0" y1="150" x2="400" y2="150" stroke="rgba(255,255,255,0.15)" stroke-dasharray="4,4"/>
+                                <line x1="0" y1="100" x2="400" y2="100" stroke="rgba(255,255,255,0.15)" stroke-dasharray="4,4"/>
+                            </svg>
+                        </div>
+                        <div class="canvas-bottom font-mono">
+                            <span>DOUBLE-ENTRY ARCHITECTURE</span>
+                            <span>RECONCILIATION: 100%</span>
                         </div>
                     </div>
                 `;
 
             case 'stockwatch':
                 return `
-                    <div class="editorial-mockup mockup-stockwatch">
-                        <div class="mockup-window-header">
-                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                            <span class="mockup-title font-mono">equity-terminal // market feed</span>
+                    <div class="edge-canvas canvas-stockwatch">
+                        <div class="canvas-top font-mono">
+                            <span class="c-badge font-mono">EQUITY ANALYTICS PORTAL</span>
+                            <span class="c-val cyan font-mono">AAPL +2.4% | NVDA +4.1%</span>
                         </div>
-                        <div class="mockup-body">
-                            <div class="stock-ticker-bar font-mono">
-                                <span class="symb">AAPL <span class="price">$224.50</span> <span class="chg green">+2.4% ↑</span></span>
-                                <span class="symb">NVDA <span class="price">$118.20</span> <span class="chg green">+4.1% ↑</span></span>
-                                <span class="symb">TSLA <span class="price">$245.10</span> <span class="chg red">-1.2% ↓</span></span>
-                            </div>
-                            <div class="stock-chart-svg">
-                                <svg viewBox="0 0 300 80" preserveAspectRatio="none">
-                                    <path d="M0,60 Q40,40 80,55 T160,25 T240,35 T300,10" fill="none" stroke="#00c6ff" stroke-width="2.5"/>
-                                    <path d="M0,60 Q40,40 80,55 T160,25 T240,35 T300,10 L300,80 L0,80 Z" fill="rgba(0,198,255,0.12)"/>
-                                    <circle cx="300" cy="10" r="3.5" fill="#00c6ff"/>
-                                </svg>
-                            </div>
-                            <div class="mockup-watch-list font-mono">
-                                <span>EQUITIES WATCHLIST</span>
-                                <span class="status-live">● LIVE TICKER</span>
-                            </div>
+                        <div class="canvas-graphic">
+                            <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="stockGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#00c6ff" stop-opacity="0.4"/>
+                                        <stop offset="100%" stop-color="#00c6ff" stop-opacity="0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,130 Q60,110 120,135 T240,50 T360,65 T400,25 L400,180 L0,180 Z" fill="url(#stockGrad)"/>
+                                <path d="M0,130 Q60,110 120,135 T240,50 T360,65 T400,25" fill="none" stroke="#00c6ff" stroke-width="3"/>
+                                <circle cx="400" cy="25" r="5" fill="#00c6ff"/>
+                            </svg>
+                        </div>
+                        <div class="canvas-bottom font-mono">
+                            <span>REAL-TIME MARKET TICKER</span>
+                            <span>REFRESH: &lt;500MS</span>
                         </div>
                     </div>
                 `;
 
             case 'dairy-scba':
                 return `
-                    <div class="editorial-mockup mockup-dairy">
-                        <div class="mockup-window-header">
-                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                            <span class="mockup-title font-mono">vensim-dynamic-model // 48m</span>
+                    <div class="edge-canvas canvas-dairy">
+                        <div class="canvas-top font-mono">
+                            <span class="c-badge font-mono">SYSTEM DYNAMICS SIMULATION</span>
+                            <span class="c-val pink font-mono">48-MONTH SCBA MODEL</span>
                         </div>
-                        <div class="mockup-body">
-                            <div class="sim-nodes-flow font-mono">
-                                <span class="sim-node">Feed Stock</span> <span class="arr">➔</span>
-                                <span class="sim-node active">Yield Rate</span> <span class="arr">➔</span>
-                                <span class="sim-node">NPV ($)</span>
-                            </div>
-                            <div class="scba-chart-svg">
-                                <svg viewBox="0 0 300 70" preserveAspectRatio="none">
-                                    <path d="M0,55 Q75,45 150,28 T300,12" fill="none" stroke="#ffffff" stroke-width="2.5"/>
-                                    <path d="M0,55 Q75,35 150,18 T300,5" fill="none" stroke="#f857a6" stroke-width="1.8" stroke-dasharray="3,3"/>
-                                    <path d="M0,55 Q75,55 150,42 T300,25" fill="none" stroke="#ff5858" stroke-width="1.8" stroke-dasharray="3,3"/>
-                                </svg>
-                            </div>
-                            <div class="sim-legend font-mono">
-                                <span><i class="dot-lgd" style="background:#ffffff"></i> Base NPV</span>
-                                <span><i class="dot-lgd" style="background:#f857a6"></i> ±10% Sensitivity</span>
-                            </div>
+                        <div class="canvas-graphic">
+                            <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,130 200,70 T400,30" fill="none" stroke="#ffffff" stroke-width="3"/>
+                                <path d="M0,150 Q100,100 200,45 T400,10" fill="none" stroke="#f857a6" stroke-width="2.5" stroke-dasharray="5,5"/>
+                                <path d="M0,150 Q100,150 200,95 T400,55" fill="none" stroke="#ff5858" stroke-width="2.5" stroke-dasharray="5,5"/>
+                            </svg>
+                        </div>
+                        <div class="canvas-bottom font-mono">
+                            <span>STOCK & FLOW MODELING</span>
+                            <span>VARIANCE: ±10% SENSITIVITY</span>
                         </div>
                     </div>
                 `;
 
             case 'industrial-audit':
                 return `
-                    <div class="editorial-mockup mockup-audit">
-                        <div class="mockup-window-header">
-                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                            <span class="mockup-title font-mono">ksdp-plant-audit // bom-re-eng</span>
+                    <div class="edge-canvas canvas-audit">
+                        <div class="canvas-top font-mono">
+                            <span class="c-badge font-mono">PLANT OPERATIONS AUDIT</span>
+                            <span class="c-val gold font-mono">BOM ACCURACY: 99.4%</span>
                         </div>
-                        <div class="mockup-body">
-                            <div class="audit-pipeline font-mono">
-                                <div class="pipe-step done"><span>Production</span><i class="fas fa-check"></i></div>
-                                <div class="pipe-step done"><span>Purchase</span><i class="fas fa-check"></i></div>
-                                <div class="pipe-step active"><span>BOM Audit</span><i class="fas fa-sync"></i></div>
-                            </div>
-                            <div class="audit-metrics-strip font-mono">
-                                <div class="a-metric">
-                                    <span class="m-val accent">99.4%</span>
-                                    <span class="m-lbl">BOM ACCURACY</span>
-                                </div>
-                                <div class="a-metric">
-                                    <span class="m-val green">-14.2%</span>
-                                    <span class="m-lbl">BATCH WASTAGE</span>
-                                </div>
-                            </div>
+                        <div class="canvas-graphic">
+                            <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+                                <rect x="30" y="110" width="40" height="50" fill="rgba(255,210,0,0.3)" stroke="#ffd200" stroke-width="2"/>
+                                <rect x="100" y="80" width="40" height="80" fill="rgba(255,210,0,0.4)" stroke="#ffd200" stroke-width="2"/>
+                                <rect x="170" y="50" width="40" height="110" fill="rgba(255,210,0,0.6)" stroke="#ffd200" stroke-width="2"/>
+                                <rect x="240" y="30" width="40" height="130" fill="rgba(255,210,0,0.8)" stroke="#ffd200" stroke-width="2"/>
+                                <rect x="310" y="15" width="40" height="145" fill="#ffd200" stroke="#ffd200" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="canvas-bottom font-mono">
+                            <span>PHARMA OPERATIONS SUITE</span>
+                            <span>4 DEPTS SYNCHRONIZED</span>
                         </div>
                     </div>
                 `;
 
             case 'quant-valuation':
                 return `
-                    <div class="editorial-mockup mockup-quant">
-                        <div class="mockup-window-header">
-                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                            <span class="mockup-title font-mono">quant_dcf_valuation.py</span>
+                    <div class="edge-canvas canvas-quant">
+                        <div class="canvas-top font-mono">
+                            <span class="c-badge font-mono">QUANTITATIVE DCF MODEL</span>
+                            <span class="c-val purple font-mono">INTRINSIC VALUE MODEL</span>
                         </div>
-                        <div class="mockup-body font-mono">
-                            <div class="code-line"><span class="kwd">def</span> <span class="fn">dcf_model</span>(cash_flows, wacc, g):</div>
-                            <div class="code-line indent"><span class="var">pv</span> = sum([cf / ((1 + wacc)**i) <span class="kwd">for</span> i, cf <span class="kwd">in</span> enumerate(cf_list)])</div>
-                            <div class="code-line indent"><span class="var">tv</span> = (cash_flows[-1] * (1 + g)) / (wacc - g)</div>
-                            <div class="code-line indent"><span class="kwd">return</span> pv + (tv / ((1 + wacc)**len(cf_list)))</div>
-                            <div class="code-result"><span>>> INTRINSIC VALUE:</span> <span class="val-target">$184.20 / share</span></div>
+                        <div class="canvas-graphic font-mono">
+                            <div class="quant-canvas-lines">
+                                <div class="q-line"><span class="q-purple">def</span> <span class="q-blue">dcf_valuation</span>(cf_list, wacc, g):</div>
+                                <div class="q-line ind"><span class="q-cyan">pv</span> = sum([cf / ((1 + wacc)**i) <span class="q-purple">for</span> i, cf <span class="q-purple">in</span> enumerate(cf)])</div>
+                                <div class="q-line ind"><span class="q-cyan">tv</span> = (cf_list[-1] * (1 + g)) / (wacc - g)</div>
+                                <div class="q-line ind"><span class="q-purple">return</span> pv + (tv / ((1 + wacc)**len(cf)))</div>
+                            </div>
+                        </div>
+                        <div class="canvas-bottom font-mono">
+                            <span>PYTHON / PANDAS QUANT ENGINE</span>
+                            <span>DISCOUNT RATE: WACC SENSITIVITY</span>
                         </div>
                     </div>
                 `;
 
             default:
-                return `<div class="media-icon-badge"><i class="fas ${proj.icon}"></i></div>`;
+                return `<div class="edge-canvas font-mono">PROJECT PREVIEW</div>`;
         }
     }
 
     bindEvents() {
         const filterContainer = document.getElementById('projects-filter-pills');
         const viewport = document.getElementById('projects-viewport');
+        const section = document.getElementById('projects');
 
         if (filterContainer) {
             filterContainer.addEventListener('click', (e) => {
@@ -428,6 +418,27 @@ class ProjectsEngine {
             });
         }
 
+        // Intercept Mouse Wheel Vertical Scroll on #projects -> Map to Horizontal Index
+        if (section) {
+            section.addEventListener('wheel', (e) => {
+                if (this.isDrawerOpen) return;
+                
+                // Prevent vertical page scroll when inside #projects
+                e.preventDefault();
+                
+                const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+                if (Math.abs(delta) > 15 && !this.wheelCooldown) {
+                    this.wheelCooldown = true;
+                    if (delta > 0) {
+                        this.next();
+                    } else {
+                        this.prev();
+                    }
+                    setTimeout(() => { this.wheelCooldown = false; }, 450);
+                }
+            }, { passive: false });
+        }
+
         if (viewport) {
             viewport.addEventListener('click', (e) => {
                 const slot = e.target.closest('.project-card-slot');
@@ -440,22 +451,6 @@ class ProjectsEngine {
                     this.goToIndex(clickedIdx);
                 }
             });
-
-            viewport.addEventListener('wheel', (e) => {
-                if (this.isDrawerOpen) return;
-                
-                const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-                if (Math.abs(delta) > 18 && !this.wheelCooldown) {
-                    e.preventDefault();
-                    this.wheelCooldown = true;
-                    if (delta > 0) {
-                        this.next();
-                    } else {
-                        this.prev();
-                    }
-                    setTimeout(() => { this.wheelCooldown = false; }, 450);
-                }
-            }, { passive: false });
 
             viewport.addEventListener('pointerdown', (e) => {
                 if (this.isDrawerOpen) return;
@@ -484,6 +479,7 @@ class ProjectsEngine {
             });
         }
 
+        // Onda Studio Circular Follower Cursor on Central Active Card
         const cursor = document.getElementById('custom-cursor');
         if (cursor && viewport) {
             viewport.addEventListener('mousemove', (e) => {
