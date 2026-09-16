@@ -53,6 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.classList.add('active');
                     const revealsInside = el.querySelectorAll('.reveal');
                     revealsInside.forEach(r => r.classList.add('active'));
+
+                    if (activeHash === '#projects' && window.projectsEngine) {
+                        window.projectsEngine.updateCarousel(false);
+                    }
                 }, 50);
             }
         });
