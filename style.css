@@ -689,16 +689,29 @@ ul {
    Onda Studio Redesigned Projects Section & Case Study Presentation
    ========================================================================= */
 
+/* Root-Level Screen Isolation & Footer Suppression */
+body.theme-projects footer {
+  display: none !important;
+}
+
+body.theme-projects, html:has(body.theme-projects) {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
 #projects {
+  position: relative;
+  width: 100vw;
   height: 100dvh;
   max-height: 100dvh;
-  width: 100vw;
-  overflow: hidden;
-  position: relative;
+  overflow: hidden !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: calc(var(--nav-height, 64px) + 8px) 3vw 24px 3vw;
+  padding-top: calc(var(--nav-height, 64px) + 8px);
+  padding-bottom: 16px;
+  padding-left: 2vw;
+  padding-right: 2vw;
   box-sizing: border-box;
   background-color: var(--bg-light);
   border-top: var(--border-width) solid var(--border-color);
@@ -715,17 +728,17 @@ ul {
   overflow: hidden;
 }
 
-/* Tier 1: Header & Category Filter Bar */
+/* Tier 1: Header & Category Filter Bar (Fixed Height 36px) */
 .projects-filter-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  height: 44px;
-  min-height: 44px;
+  height: 36px;
+  min-height: 36px;
   border-bottom: var(--border-width) solid var(--border-color);
-  padding-bottom: 8px;
-  margin-bottom: 8px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
   gap: 1rem;
   z-index: 40;
   background-color: var(--bg-light);
@@ -750,10 +763,10 @@ ul {
   background: var(--bg-card);
   color: var(--text-dark);
   border: var(--border-width) solid var(--border-color);
-  padding: 0.45rem 0.95rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   box-shadow: 2px 2px 0px var(--border-color);
@@ -783,12 +796,12 @@ ul {
   display: inline-flex;
 }
 
-/* Tier 2: Project Title Header (Fixed Height 48px) */
+/* Tier 2: Project Title Header (Fixed Height 44px) */
 .projects-active-header {
   flex-shrink: 0;
-  height: 48px;
-  min-height: 48px;
-  max-height: 48px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -798,7 +811,7 @@ ul {
 
 .active-project-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+  font-size: clamp(1.4rem, 2.0vw, 2.2rem);
   font-weight: 500;
   color: var(--text-dark);
   letter-spacing: -0.5px;
@@ -813,7 +826,7 @@ ul {
   opacity: 0;
 }
 
-/* Tier 3: 3-Card Carousel Track (Flex: 1) */
+/* Tier 3: 3-Card Carousel Stage (Flex: 1) */
 .projects-viewport {
   flex: 1;
   height: 100%;
@@ -823,9 +836,10 @@ ul {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   user-select: none;
   touch-action: pan-y;
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
 }
 
 .projects-viewport.is-dragging {
@@ -835,7 +849,7 @@ ul {
 .projects-track {
   display: flex;
   align-items: center;
-  gap: clamp(20px, 3.5vw, 48px);
+  gap: clamp(16px, 3vw, 40px);
   transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
   will-change: transform;
   height: 100%;
@@ -852,24 +866,27 @@ ul {
   justify-content: center;
 }
 
-/* Slot Sizes with Clamp */
+/* Clamped Slot Dimensions */
 .project-card-slot.is-active {
-  width: clamp(480px, 52vw, 760px);
+  height: clamp(260px, 42dvh, 400px);
+  width: clamp(420px, 48vw, 680px);
   opacity: 1.0;
   transform: scale(1.0);
-  z-index: 20;
+  z-index: 10;
 }
 
 .project-card-slot.is-prev,
 .project-card-slot.is-next {
-  width: clamp(240px, 26vw, 360px);
-  opacity: 0.45;
+  height: clamp(220px, 35dvh, 340px);
+  width: clamp(220px, 22vw, 320px);
+  opacity: 0.35;
   transform: scale(0.85);
-  z-index: 10;
+  z-index: 5;
 }
 
 .project-card-slot.is-far {
-  width: clamp(240px, 26vw, 360px);
+  height: clamp(220px, 35dvh, 340px);
+  width: clamp(220px, 22vw, 320px);
   opacity: 0.1;
   transform: scale(0.75);
   pointer-events: none;
@@ -878,7 +895,7 @@ ul {
 .card-inner-frame {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   overflow: hidden;
@@ -909,7 +926,7 @@ ul {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 1.2rem;
   box-sizing: border-box;
   color: #ffffff;
   position: relative;
@@ -920,7 +937,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 1px;
   z-index: 5;
@@ -928,7 +945,7 @@ ul {
 
 .c-badge {
   background: rgba(0, 0, 0, 0.5);
-  padding: 0.35rem 0.75rem;
+  padding: 0.3rem 0.65rem;
   border-radius: 999px;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -946,27 +963,27 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.8rem 0;
+  margin: 0.5rem 0;
   position: relative;
 }
 
 .canvas-graphic svg {
   width: 100%;
   height: 100%;
-  max-height: 180px;
+  max-height: 160px;
 }
 
 .quant-canvas-lines {
   background: rgba(0, 0, 0, 0.4);
-  padding: 1rem 1.2rem;
+  padding: 0.8rem 1rem;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   width: 100%;
-  font-size: 0.75rem;
-  line-height: 1.6;
+  font-size: 0.72rem;
+  line-height: 1.5;
 }
 
-.q-line.ind { padding-left: 1.2rem; }
+.q-line.ind { padding-left: 1rem; }
 .q-purple { color: #c084fc; font-weight: 700; }
 .q-blue { color: #60a5fa; font-weight: 700; }
 .q-cyan { color: #38bdf8; }
@@ -975,26 +992,28 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 1px;
   color: rgba(255, 255, 255, 0.65);
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  padding-top: 0.6rem;
+  padding-top: 0.5rem;
   z-index: 5;
 }
 
-/* Tier 4: Metadata Footer (Fixed Height 44px) */
+/* Tier 4: Metadata Footer (Fixed Height 40px) */
 .projects-active-meta {
   flex-shrink: 0;
-  height: 44px;
+  height: 40px;
+  margin-top: 8px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  max-width: clamp(480px, 52vw, 760px);
+  max-width: clamp(420px, 48vw, 680px);
   width: 100%;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .active-index-dot {
@@ -1010,25 +1029,25 @@ ul {
 
 .meta-line-1 {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   color: var(--text-dark);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.1rem;
 }
 
 .meta-line-2 {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-muted);
 }
 
 /* Custom Circular Follower Cursor (Onda Style) */
 #custom-cursor.cursor-open-project {
-  width: 90px !important;
-  height: 90px !important;
-  background-color: #050505 !important;
+  width: 84px !important;
+  height: 84px !important;
+  background-color: #000000 !important;
   color: #ffffff !important;
   border-radius: 50% !important;
   border: none !important;
