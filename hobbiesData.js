@@ -1,5 +1,5 @@
 // =========================================================================
-// Hobbies & Art Folio Dataset (Philately & Numismatics, Sketching & Art)
+// Hobbies & Art Folio Dataset (Philately, Sketching, Photography)
 // =========================================================================
 
 const hobbiesData = [
@@ -184,7 +184,7 @@ const hobbiesData = [
     },
 
     // -------------------------------------------------------------------------
-    // CATEGORY 2: SKETCHING & ART (Micron pen art, architectural drawings, photo)
+    // CATEGORY 2: SKETCHING & ART (Micron pen art, architectural drawings)
     // -------------------------------------------------------------------------
     {
         id: 'sketching-01',
@@ -301,8 +301,34 @@ const hobbiesData = [
         category: 'sketching',
         categoryLabel: 'SKETCHING & ART',
         index: 6,
+        title: 'Isometric Factory Layout & Assembly Line Flow',
+        series: 'Industrial System Art',
+        era: '2024 Engineering Art',
+        scale: '420 × 594 mm (A2 Technical Sheet)',
+        medium: 'Precision Drafting Pen & Copic Cool Grey Markers',
+        narrative: 'Bridging engineering rigor with fine art. An isometric cross-section of an automated factory floor, visualizing material handling conveyors, robotic arms, and queue buffers.',
+        specs: [
+            { label: 'Grid:', value: '30°/60° Isometric Projection' },
+            { label: 'Tonal System:', value: 'Copic Cool Grey Markers (C0 to C7)' },
+            { label: 'Subject:', value: 'Industrial Supply Chain Automation' },
+            { label: 'Scale:', value: 'Schematic Perspective Rendering' }
+        ],
+        cardColor: '#212f3d',
+        accentColor: '#00c6ff',
+        badge: 'Isometric Drafting',
+        image: 'assets/images/art.png'
+    },
+
+    // -------------------------------------------------------------------------
+    // CATEGORY 3: PHOTOGRAPHY (Architectural and landscape captures)
+    // -------------------------------------------------------------------------
+    {
+        id: 'photo-01',
+        category: 'photo',
+        categoryLabel: 'PHOTOGRAPHY',
+        index: 1,
         title: 'Nocturnal Urban Geometry & Neon Reflections',
-        series: 'Architectural Photography',
+        series: 'Metropolitan Shadows',
         era: '2024 Architectural Series',
         scale: '35mm Full-Frame (85mm f/1.4 Prime)',
         medium: 'Digital Capture / Archival Giclée Fine Art Print',
@@ -315,14 +341,14 @@ const hobbiesData = [
         ],
         cardColor: '#0b132b',
         accentColor: '#48cae4',
-        badge: 'Fine Art Photo',
+        badge: 'Night Photography',
         image: 'assets/images/photo.png'
     },
     {
-        id: 'sketching-07',
-        category: 'sketching',
-        categoryLabel: 'SKETCHING & ART',
-        index: 7,
+        id: 'photo-02',
+        category: 'photo',
+        categoryLabel: 'PHOTOGRAPHY',
+        index: 2,
         title: 'Ridge Line Solitude: Western Ghats Canopy',
         series: 'Landscape Horizon',
         era: '2023 Mountain Expeditions',
@@ -341,10 +367,76 @@ const hobbiesData = [
         image: 'assets/images/photo.png'
     },
     {
-        id: 'sketching-08',
-        category: 'sketching',
-        categoryLabel: 'SKETCHING & ART',
-        index: 8,
+        id: 'photo-03',
+        category: 'photo',
+        categoryLabel: 'PHOTOGRAPHY',
+        index: 3,
+        title: 'Vanishing Corridor & Steel Railway Symmetry',
+        series: 'Linear Vanishing Points',
+        era: '2024 Transport Infrastructure',
+        scale: '35mm Full-Frame (50mm Prime)',
+        medium: 'Monochromatic High-Contrast Silver Digital',
+        narrative: 'A perfectly centered long-exposure shot down an empty multi-track rail corridor. The converging steel rails and overhead catenary wires form a compelling geometric perspective vector.',
+        specs: [
+            { label: 'Format:', value: 'Monochrome Silver Tone' },
+            { label: 'Composition:', value: 'One-Point Centered Perspective' },
+            { label: 'Shutter Speed:', value: '1/500 sec Crisp Freeze' },
+            { label: 'Lighting:', value: 'Overcast Soft Sky Diffusion' }
+        ],
+        cardColor: '#212121',
+        accentColor: '#ffffff',
+        badge: 'Monochrome Steel',
+        image: 'assets/images/photo.png'
+    },
+    {
+        id: 'photo-04',
+        category: 'photo',
+        categoryLabel: 'PHOTOGRAPHY',
+        index: 4,
+        title: 'Golden Hour Concrete Curves: Spiral Ramp Architecture',
+        series: 'Brutalist Curves',
+        era: '2023 Structural Geometry',
+        scale: '35mm Full-Frame (35mm f/1.8)',
+        medium: 'Color Negative Film Emulation',
+        narrative: 'Warm late-afternoon sun rays grazing a circular concrete pedestrian ramp. Shadows accentuate the helical curve, transforming functional civil engineering into sculptural artwork.',
+        specs: [
+            { label: 'Focal Length:', value: '35mm Perspective' },
+            { label: 'Lighting:', value: 'Low Angle Golden Hour Sun (4500K)' },
+            { label: 'Subject:', value: 'Reinforced Helical Concrete Ramp' },
+            { label: 'Palette:', value: 'Warm Ochre & Deep Slate Gray' }
+        ],
+        cardColor: '#4a3b32',
+        accentColor: '#ffb703',
+        badge: 'Golden Hour Concrete',
+        image: 'assets/images/photo.png'
+    },
+    {
+        id: 'photo-05',
+        category: 'photo',
+        categoryLabel: 'PHOTOGRAPHY',
+        index: 5,
+        title: 'Long-Exposure Seascape Horizon & Tidal Solitude',
+        series: 'Fluid Time Studies',
+        era: '2024 Coastal Expeditions',
+        scale: '35mm Full-Frame (16mm ND1000)',
+        medium: '30-Second Neutral Density Exposure',
+        narrative: 'Utilizing a 10-stop neutral density filter to smooth ocean waves into a misty ether. The sharp silhouette of ancient tide rocks provides a permanent anchor against fluid motion.',
+        specs: [
+            { label: 'Filter System:', value: '10-Stop ND (1000x) Optical Glass' },
+            { label: 'Shutter Duration:', value: '30.0 Seconds Smooth Exposure' },
+            { label: 'Aperture:', value: 'f/16 for Edge-to-Edge Sharpness' },
+            { label: 'Theme:', value: 'Permanence vs. Evanescence' }
+        ],
+        cardColor: '#1d3557',
+        accentColor: '#a8dadc',
+        badge: 'Seascape ND Filter',
+        image: 'assets/images/photo.png'
+    },
+    {
+        id: 'photo-06',
+        category: 'photo',
+        categoryLabel: 'PHOTOGRAPHY',
+        index: 6,
         title: 'Industrial Low-Poly 3D Environments',
         series: 'Blender & CGI Worldbuilding',
         era: '2024 3D Art & CGI',
