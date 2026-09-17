@@ -134,6 +134,18 @@ class HobbiesEngine {
             displayList = displayList.concat(this.filteredData);
         }
 
+        // Camera frustum compensation based on active category
+        if (category === 'photo') {
+            const count = displayList.length;
+            const cardWidth = 1.45;
+            const marginGap = 0.55;
+            const minCircumference = count * (cardWidth + marginGap);
+            const safeRadius = Math.max(7.5, minCircumference / (2 * Math.PI));
+            this.cameraTargetPos.set(0, 1.2, safeRadius + 8.5);
+        } else {
+            this.cameraTargetPos.set(0, 0, 16.5);
+        }
+
         this.build3DFormation(displayList, category);
     }
 
@@ -159,9 +171,14 @@ class HobbiesEngine {
         } else if (category === 'sketching') {
             planeGeo = new THREE.PlaneGeometry(1.45, 1.95);
         } else {
-            // Enlarged photography cards: 1.55 x 2.1
-            planeGeo = new THREE.PlaneGeometry(1.55, 2.1);
+            planeGeo = new THREE.PlaneGeometry(1.45, 1.95);
         }
+
+        // Dynamic Safe Radius Calculation for Photography Ring
+        const cardWidth = 1.45;
+        const marginGap = 0.55;
+        const minCircumference = count * (cardWidth + marginGap);
+        const photoSafeRadius = Math.max(7.5, minCircumference / (2 * Math.PI));
 
         items.forEach((item, i) => {
             const texture = this.generateCardTexture(item, i);
@@ -200,17 +217,13 @@ class HobbiesEngine {
                 mesh.position.set(x, y, z);
                 mesh.rotation.set(0, -angle + Math.PI / 2, 0);
             } else {
-                // Photography (Cylinder / Staggered Ring Formation — Collision Fix, radius = 6.2)
-                const radius = 6.2;
-                const angleStep = (Math.PI * 2) / count;
-                const angle = i * angleStep;
-                const yOffset = (i % 2 === 0 ? 0.35 : -0.35);
-                const rEff = radius + (i % 3 === 0 ? 0.2 : 0);
+                // Photography Dynamic Arc Geometry (2-Tier Alternating Stagger, photoSafeRadius)
+                const angle = (i / count) * Math.PI * 2;
+                const y = (i % 2 === 0 ? 0.75 : -0.75);
+                const x = photoSafeRadius * Math.sin(angle);
+                const z = photoSafeRadius * Math.cos(angle);
 
-                const x = rEff * Math.sin(angle);
-                const z = rEff * Math.cos(angle);
-
-                mesh.position.set(x, yOffset, z);
+                mesh.position.set(x, y, z);
                 mesh.rotation.set(0, angle, 0);
             }
 
