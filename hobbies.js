@@ -494,12 +494,17 @@ class HobbiesEngine {
 
     setupModalListeners() {
         const modal = document.getElementById('hobbies-modal');
+        const backdrop = document.querySelector('.hobbies-modal-backdrop');
         const closeBtn = document.getElementById('hobbies-modal-close');
         const prevBtn = document.getElementById('modal-prev-btn');
         const nextBtn = document.getElementById('modal-next-btn');
 
         if (closeBtn) {
             closeBtn.addEventListener('click', () => this.closeDetailModal());
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener('click', () => this.closeDetailModal());
         }
 
         if (prevBtn) {
@@ -605,17 +610,13 @@ class HobbiesEngine {
             headerPath.textContent = `${item.categoryLabel} // ${currentIndex.toString().padStart(2, '0')} / ${totalCount.toString().padStart(2, '0')}`;
         }
 
-        // Left Column Artwork Frame
+        // Left Column Artwork Frame (Pure Visual Media Presentation)
         const artFrame = document.getElementById('modal-art-frame');
-        const artTitle = document.getElementById('modal-art-title');
-        const artEra = document.getElementById('modal-art-era');
         const artBadge = document.getElementById('modal-art-badge');
 
         if (artFrame) {
             artFrame.style.background = `linear-gradient(135deg, ${item.cardColor || '#1c2833'}, #050a0e)`;
         }
-        if (artTitle) artTitle.textContent = item.title;
-        if (artEra) artEra.textContent = `${item.era} • ${item.scale}`;
         if (artBadge) artBadge.textContent = item.badge || item.categoryLabel;
 
         // Right Column Editorial Specs

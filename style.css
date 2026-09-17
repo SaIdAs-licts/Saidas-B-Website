@@ -1773,26 +1773,34 @@ body.theme-hobbies, html:has(body.theme-hobbies) {
   text-transform: uppercase;
 }
 
-.modal-close-btn {
-  display: flex;
+.modal-close-btn,
+.artifact-modal-close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--text-dark);
-  color: #ffffff;
-  border: 1.5px solid var(--text-dark);
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-family: inherit;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #111;
   cursor: pointer;
   transition: all 0.2s ease;
+  z-index: 50;
 }
 
-.modal-close-btn:hover {
-  background: var(--bg-neon);
-  color: var(--text-dark);
-  border-color: var(--border-color);
+.modal-close-btn:hover,
+.artifact-modal-close:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
 }
 
 .hobbies-modal-stage {
