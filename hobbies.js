@@ -32,8 +32,8 @@ class HobbiesEngine {
         this.dampingFactor = 0.05;
 
         // Animation target coordinates for camera fly-in
-        this.cameraTargetPos = new THREE.Vector3(0, 0, 19);
-        this.defaultCameraPos = new THREE.Vector3(0, 0, 19);
+        this.cameraTargetPos = new THREE.Vector3(0, 0, 16.5);
+        this.defaultCameraPos = new THREE.Vector3(0, 0, 16.5);
 
         // Textures Cache
         this.textureCache = new Map();
@@ -55,10 +55,11 @@ class HobbiesEngine {
         // Scene Setup
         this.scene = new THREE.Scene();
 
-        // Camera Setup (Safe viewport fit: FOV 42, near 0.1, far 1000, position Z=19)
+        // Camera Setup (Viewport fit: FOV 44, near 0.1, far 1000, position Z=16.5)
         const aspect = window.innerWidth / window.innerHeight;
-        this.camera = new THREE.PerspectiveCamera(42, aspect, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(44, aspect, 0.1, 1000);
         this.camera.position.copy(this.defaultCameraPos);
+        this.camera.updateProjectionMatrix();
 
         // Renderer Setup
         this.renderer = new THREE.WebGLRenderer({
@@ -127,7 +128,7 @@ class HobbiesEngine {
         const rawData = window.hobbiesData || [];
         this.filteredData = rawData.filter(d => d.category === category);
 
-        // If dataset is small, replicate items to populate 30-45 planes for rich 3D visual
+        // Replicate items if needed to populate rich 3D layout
         let displayList = [...this.filteredData];
         while (displayList.length < 36 && displayList.length > 0) {
             displayList = displayList.concat(this.filteredData);
@@ -150,8 +151,17 @@ class HobbiesEngine {
         this.cardMeshes = [];
 
         const count = items.length;
-        // World unit plane size: 1.15 x 1.45 to fit comfortably in FOV 42
-        const planeGeo = new THREE.PlaneGeometry(1.15, 1.45);
+
+        // Category-specific plane dimensions
+        let planeGeo;
+        if (category === 'philately') {
+            planeGeo = new THREE.PlaneGeometry(1.35, 1.7);
+        } else if (category === 'sketching') {
+            planeGeo = new THREE.PlaneGeometry(1.45, 1.95);
+        } else {
+            // Enlarged photography cards: 1.55 x 2.1
+            planeGeo = new THREE.PlaneGeometry(1.55, 2.1);
+        }
 
         items.forEach((item, i) => {
             const texture = this.generateCardTexture(item, i);
@@ -167,8 +177,8 @@ class HobbiesEngine {
             let pos = new THREE.Vector3();
 
             if (category === 'philately') {
-                // Floating Globe / Fibonacci Sphere Formation (radius = 5.0)
-                const radius = 5.0;
+                // Philately & Numismatics (3D Fibonacci Sphere, radius = 5.8)
+                const radius = 5.8;
                 const phi = Math.acos(-1 + (2 * (i + 0.5)) / count);
                 const theta = Math.sqrt(count * Math.PI) * phi;
 
@@ -180,9 +190,9 @@ class HobbiesEngine {
                 mesh.lookAt(0, 0, 0);
                 mesh.rotateY(Math.PI); // Face outwards
             } else if (category === 'sketching') {
-                // Double Helix / Vertical Spiral Formation (radius = 4.6, height clamped between y = -3.4 and y = 3.4)
-                const radius = 4.6;
-                const angle = i * 0.48;
+                // Sketching & Art (3D Vertical Helix / Spiral, radius = 5.2, clamped y = -3.4 to 3.4)
+                const radius = 5.2;
+                const angle = i * 0.46;
                 const y = -3.4 + (i / count) * 6.8;
                 const x = radius * Math.cos(angle);
                 const z = radius * Math.sin(angle);
@@ -190,15 +200,18 @@ class HobbiesEngine {
                 mesh.position.set(x, y, z);
                 mesh.rotation.set(0, -angle + Math.PI / 2, 0);
             } else {
-                // Photography Orbit Ring Formation (radius = 5.2)
-                const radius = 5.2;
-                const angle = (i / count) * Math.PI * 2;
-                const y = Math.sin(i * 0.8) * 0.8;
-                const x = radius * Math.cos(angle);
-                const z = radius * Math.sin(angle);
+                // Photography (Cylinder / Staggered Ring Formation — Collision Fix, radius = 6.2)
+                const radius = 6.2;
+                const angleStep = (Math.PI * 2) / count;
+                const angle = i * angleStep;
+                const yOffset = (i % 2 === 0 ? 0.35 : -0.35);
+                const rEff = radius + (i % 3 === 0 ? 0.2 : 0);
 
-                mesh.position.set(x, y, z);
-                mesh.lookAt(x * 2, y, z * 2);
+                const x = rEff * Math.sin(angle);
+                const z = rEff * Math.cos(angle);
+
+                mesh.position.set(x, yOffset, z);
+                mesh.rotation.set(0, angle, 0);
             }
 
             // Save initial scale for hover lerps
