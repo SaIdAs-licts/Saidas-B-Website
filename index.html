@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
@@ -558,21 +558,56 @@
         </div>
     </section>
 
-    <!-- Blog Section -->
+    <!-- Blog Section (Vita Architecture Journal Design) -->
     <section id="blog" class="blog reveal">
-        <div class="container">
-            <div class="blog-header">
-                <h2 class="section-title">Latest <span class="highlight">Writings</span></h2>
-                <a href="#admin" id="open-admin-btn" class="btn btn-sm btn-outline"><i class="fas fa-plus"></i> Post</a>
-            </div>
-            
-            <div class="blog-grid" id="blog-container">
-                <!-- Blog posts will be dynamically injected here from blogs.json -->
-                <div class="loading-state">
-                   <i class="fas fa-spinner fa-spin"></i> Loading latest research and thoughts...
+        <!-- Rotating mouse follower badge element -->
+        <div id="badge-follower" class="badge-follower">
+            <svg viewBox="0 0 100 100" class="rotating-text-svg">
+                <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+                <text font-size="10.5" font-weight="700" letter-spacing="2.2" fill="#000">
+                    <textPath href="#circlePath" startOffset="0%">
+                        READ THE ARTICLE • READ THE ARTICLE •
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+
+        <div class="journal-wrapper">
+            <!-- Journal Masthead & Category Filter Bar -->
+            <div class="journal-masthead">
+                <div class="masthead-left">
+                    <span class="masthead-meta-label">ARCHIVE INDEX /</span>
+                    <nav class="category-filters" id="journal-category-filters">
+                        <button class="filter-btn active" data-category="All">All</button>
+                        <span class="sep">,</span>
+                        <button class="filter-btn" data-category="Thoughts">Thoughts</button>
+                        <span class="sep">,</span>
+                        <button class="filter-btn" data-category="Operations">Operations</button>
+                        <span class="sep">,</span>
+                        <button class="filter-btn" data-category="Quant & Finance">Quant & Finance</button>
+                        <span class="sep">,</span>
+                        <button class="filter-btn" data-category="Engineering">Engineering</button>
+                    </nav>
+                </div>
+                <div class="masthead-right">
+                    <span class="masthead-issue">VOL. IV / 2026</span>
                 </div>
             </div>
-            
+
+            <!-- Header Title -->
+            <div class="journal-header-title-box">
+                <h1 class="journal-main-title">JOURNAL</h1>
+            </div>
+
+            <!-- Asymmetric Grid Container -->
+            <div class="journal-grid" id="journal-grid">
+                <!-- Injected dynamically by blog.js -->
+            </div>
+        </div>
+
+        <!-- Full Article Reader View Overlay -->
+        <div id="article-detail-view" class="article-detail-view" style="display: none;">
+            <!-- Content dynamically rendered by blog.js -->
         </div>
     </section>
 
@@ -657,6 +692,8 @@
     <script src="hobbiesData.js"></script>
     <script src="hobbies.js"></script>
     <script src="projects.js"></script>
+    <script src="blogData.js"></script>
+    <script src="blog.js"></script>
     <script src="app.js"></script>
     <script type="module">
         import createGlobe from 'https://cdn.jsdelivr.net/npm/cobe@0.6.3/+esm';

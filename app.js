@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.hobbiesEngine.init();
                         window.hobbiesEngine.onTabMount();
                     }
+                    if (activeHash === '#blog' && window.blogEngine) {
+                        window.blogEngine.init();
+                    }
                 }, 50);
             }
         });
