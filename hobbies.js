@@ -1,5 +1,5 @@
 // =========================================================================
-// Hobbies 3D Sphere/Prism Gallery & Detail Modal Engine (Oumahi Architecture)
+// Hobbies 3D Sphere & Double Helix Gallery Engine (Refined Bounds & Physics)
 // =========================================================================
 
 class HobbiesEngine {
@@ -31,9 +31,13 @@ class HobbiesEngine {
         this.currentRotation = { x: 0, y: 0 };
         this.dampingFactor = 0.05;
 
-        // Animation target coordinates for camera fly-in
-        this.cameraTargetPos = new THREE.Vector3(0, 0, 750);
-        this.defaultCameraPos = new THREE.Vector3(0, 0, 750);
+        // Animation target coordinates for camera
+        // Camera positioned at Z=19 with FOV 42 for complete viewport clearance
+        this.defaultCameraPos = new THREE.Vector3(0, 0, 19);
+        this.cameraTargetPos = new THREE.Vector3(0, 0, 19);
+
+        // Morph Animation State
+        this.isTransitioning = false;
 
         // Textures Cache
         this.textureCache = new Map();
@@ -55,9 +59,9 @@ class HobbiesEngine {
         // Scene Setup
         this.scene = new THREE.Scene();
 
-        // Camera Setup
+        // Camera Setup (Strict Bounds Setup)
         const aspect = window.innerWidth / window.innerHeight;
-        this.camera = new THREE.PerspectiveCamera(45, aspect, 1, 3000);
+        this.camera = new THREE.PerspectiveCamera(42, aspect, 0.1, 1000);
         this.camera.position.copy(this.defaultCameraPos);
 
         // Renderer Setup
@@ -72,15 +76,15 @@ class HobbiesEngine {
         this.canvas = this.renderer.domElement;
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
         this.scene.add(ambientLight);
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-        dirLight.position.set(500, 800, 500);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+        dirLight.position.set(20, 30, 20);
         this.scene.add(dirLight);
 
-        const fillLight = new THREE.DirectionalLight(0xb8fb01, 0.2);
-        fillLight.position.set(-500, -500, -200);
+        const fillLight = new THREE.DirectionalLight(0xb8fb01, 0.25);
+        fillLight.position.set(-20, -20, -10);
         this.scene.add(fillLight);
 
         // Group container for all 3D cards
@@ -127,9 +131,9 @@ class HobbiesEngine {
         const rawData = window.hobbiesData || [];
         this.filteredData = rawData.filter(d => d.category === category);
 
-        // If dataset is small, replicate items to populate 30-45 planes for rich sphere visual
+        // Replicate dataset to populate ~28-32 cards for rich 3D density
         let displayList = [...this.filteredData];
-        while (displayList.length < 36 && displayList.length > 0) {
+        while (displayList.length < 28 && displayList.length > 0) {
             displayList = displayList.concat(this.filteredData);
         }
 
@@ -150,13 +154,8 @@ class HobbiesEngine {
         this.cardMeshes = [];
 
         const count = items.length;
-        const planeGeo = new THREE.PlaneGeometry(90, 115);
-
-        // Formation geometries based on category:
-        // 'philately' -> Fibonacci Sphere
-        // 'sketching' -> Tilted Prism / Helix Cylinder
-        // 'photo' -> Orbit Ring / Ring Formation
-        const radius = category === 'philately' ? 360 : (category === 'sketching' ? 320 : 380);
+        // World unit plane geometry (1.15 x 1.45)
+        const planeGeo = new THREE.PlaneGeometry(1.15, 1.45);
 
         items.forEach((item, i) => {
             const texture = this.generateCardTexture(item, i);
@@ -170,10 +169,12 @@ class HobbiesEngine {
             mesh.userData = { item, index: i, originalCategory: category };
 
             let pos = new THREE.Vector3();
-            let lookTarget = new THREE.Vector3();
+            let rot = new THREE.Euler();
 
             if (category === 'philately') {
-                // Golden ratio Fibonacci Sphere Distribution
+                // 1. FLOATING GLOBE / SPHERE FORMATION (Philately & Numismatics)
+                // Target radius = 5.0
+                const radius = 5.0;
                 const phi = Math.acos(-1 + (2 * (i + 0.5)) / count);
                 const theta = Math.sqrt(count * Math.PI) * phi;
 
@@ -182,47 +183,32 @@ class HobbiesEngine {
                 pos.z = radius * Math.cos(phi);
 
                 mesh.position.copy(pos);
-                lookTarget.copy(pos).multiplyScalar(2); // Face outward from origin
-                mesh.lookAt(lookTarget);
-            } else if (category === 'sketching') {
-                // Tilted Prism / Helix Cylinder Formation
-                const angle = (i / count) * Math.PI * 4; // Two full rotations
-                const yOffset = ((i - count / 2) / count) * 400;
-
-                pos.x = radius * Math.cos(angle);
-                pos.y = yOffset;
-                pos.z = radius * Math.sin(angle);
-
-                mesh.position.copy(pos);
-                lookTarget.set(pos.x * 2, pos.y, pos.z * 2);
-                mesh.lookAt(lookTarget);
+                // Orient card facing directly outwards from sphere origin
+                mesh.lookAt(0, 0, 0);
+                mesh.rotation.y += Math.PI; // 180° flip so front faces out
             } else {
-                // Orbit Ring Formation
-                const angle = (i / count) * Math.PI * 2;
-                const ringRadius = radius + (i % 2 === 0 ? 30 : -30);
+                // 2. DOUBLE HELIX / VERTICAL SPIRAL FORMATION (Sketching & Art)
+                // Target radius = 4.6, Height clamped strictly between y = -3.4 and y = 3.4
+                const radius = 4.6;
+                const angle = i * 0.48;
+                const y = -3.4 + (i / count) * 6.8;
+                const x = radius * Math.cos(angle);
+                const z = radius * Math.sin(angle);
 
-                pos.x = ringRadius * Math.cos(angle);
-                pos.y = Math.sin(i * 0.8) * 80; // Slight wave
-                pos.z = ringRadius * Math.sin(angle);
-
+                pos.set(x, y, z);
                 mesh.position.copy(pos);
-                lookTarget.set(pos.x * 2, pos.y, pos.z * 2);
-                mesh.lookAt(lookTarget);
+
+                // Tangent rotation facing outward along spiral arc
+                mesh.rotation.y = -angle + Math.PI / 2;
             }
 
-            // Save initial scale for hover lerps
+            // Save target positions for smooth lerp
             mesh.userData.baseScale = new THREE.Vector3(1, 1, 1);
             mesh.userData.targetScale = new THREE.Vector3(1, 1, 1);
 
             this.cardGroup.add(mesh);
             this.cardMeshes.push(mesh);
         });
-
-        // Update HUD counter
-        const counterEl = document.getElementById('hobbies-count');
-        if (counterEl) {
-            counterEl.textContent = `${this.filteredData.length} ARTIFACTS`;
-        }
     }
 
     generateCardTexture(item, instanceIdx) {
@@ -233,19 +219,19 @@ class HobbiesEngine {
 
         const canvas = document.createElement('canvas');
         canvas.width = 512;
-        canvas.height = 640;
+        canvas.height = 646;
         const ctx = canvas.getContext('2d');
 
-        // Background Frame (White / Cream Deckled Polaroid Frame)
+        // Outer Frame (Deckled Cream Paper / Stamp Frame)
         ctx.fillStyle = '#f7f6f2';
-        ctx.fillRect(0, 0, 512, 640);
+        ctx.fillRect(0, 0, 512, 646);
 
         // Outer Dark Border Line
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 6;
-        ctx.strokeRect(6, 6, 500, 628);
+        ctx.strokeRect(6, 6, 500, 634);
 
-        // Inner Graphic Stage Canvas Area
+        // Inner Graphic Stage Area
         const innerX = 32;
         const innerY = 32;
         const innerW = 448;
@@ -258,9 +244,8 @@ class HobbiesEngine {
         ctx.fillStyle = grad;
         ctx.fillRect(innerX, innerY, innerW, innerH);
 
-        // Stamp Deckled Edges or Polaroid Inner Frame
+        // Stamp Perforations for Philately Items
         if (item.category === 'philately') {
-            // Serrated Stamp Perforations
             ctx.fillStyle = '#f7f6f2';
             const perfCountX = 14;
             const perfCountY = 16;
@@ -281,33 +266,23 @@ class HobbiesEngine {
             }
         }
 
-        // Inner Artwork Graphics & Patterns
+        // Inner Artwork Graphics & Fine Line Patterns
         ctx.save();
         ctx.rect(innerX + 10, innerY + 10, innerW - 20, innerH - 20);
         ctx.clip();
 
-        // Decorative Art Patterns / Line Hatching
         ctx.strokeStyle = item.accentColor || '#b8fb01';
         ctx.lineWidth = 1.5;
         ctx.globalAlpha = 0.35;
 
         if (item.category === 'sketching') {
-            // Micron architectural perspective lines
             for (let l = 0; l < 18; l++) {
                 ctx.beginPath();
                 ctx.moveTo(innerX + 20, innerY + l * 25);
                 ctx.lineTo(innerX + innerW - 20, innerY + innerH - (l * 15));
                 ctx.stroke();
             }
-        } else if (item.category === 'photo') {
-            // Concentric aperture rings
-            for (let r = 1; r <= 5; r++) {
-                ctx.beginPath();
-                ctx.arc(innerX + innerW / 2, innerY + innerH / 2, r * 45, 0, Math.PI * 2);
-                ctx.stroke();
-            }
         } else {
-            // Vintage guilloche postal curves
             for (let i = 0; i < 8; i++) {
                 ctx.beginPath();
                 ctx.ellipse(innerX + innerW / 2, innerY + innerH / 2, 80 + i * 15, 50 + i * 20, Math.PI / 4, 0, Math.PI * 2);
@@ -318,7 +293,7 @@ class HobbiesEngine {
         ctx.globalAlpha = 1.0;
         ctx.restore();
 
-        // Title & Badge Text on Graphic Canvas
+        // Title & Badge Text on Canvas
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 22px "Manrope", sans-serif';
         ctx.fillText(item.badge || item.categoryLabel, innerX + 20, innerY + 45);
@@ -327,15 +302,15 @@ class HobbiesEngine {
         ctx.font = 'bold 16px "Noto Sans Mono", monospace';
         ctx.fillText(`#0${item.index || instanceIdx + 1} // ARCHIVE SPECIMEN`, innerX + 20, innerY + 75);
 
-        // Center Artwork Symbol
+        // Center Icon Symbol
         ctx.fillStyle = item.accentColor || '#ffffff';
         ctx.font = '64px "Font Awesome 6 Free", sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        const iconChar = item.category === 'philately' ? '🏷️' : (item.category === 'sketching' ? '✏️' : '📷');
+        const iconChar = item.category === 'philately' ? '🏷️' : '✏️';
         ctx.fillText(iconChar, innerX + innerW / 2, innerY + innerH / 2 + 10);
 
-        // Card Bottom Metadata Caption (Polaroid / Archival Stamp Specs)
+        // Bottom Metadata Caption (Paper / Polaroid Margin)
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#111111';
@@ -362,7 +337,6 @@ class HobbiesEngine {
     bindEvents() {
         window.addEventListener('resize', () => this.onResize());
 
-        // Pointer events for dragging & raycasting
         const dom = this.container;
 
         dom.addEventListener('pointerdown', (e) => {
@@ -379,11 +353,11 @@ class HobbiesEngine {
                 const deltaX = e.clientX - this.previousMousePosition.x;
                 const deltaY = e.clientY - this.previousMousePosition.y;
 
-                this.rotationVelocity.y = deltaX * 0.005;
-                this.rotationVelocity.x = deltaY * 0.005;
+                this.rotationVelocity.y = deltaX * 0.004;
+                this.rotationVelocity.x = deltaY * 0.004;
 
-                this.targetRotation.y += deltaX * 0.005;
-                this.targetRotation.x += deltaY * 0.005;
+                this.targetRotation.y += deltaX * 0.004;
+                this.targetRotation.x += deltaY * 0.004;
 
                 this.previousMousePosition = { x: e.clientX, y: e.clientY };
             }
@@ -395,10 +369,9 @@ class HobbiesEngine {
         });
 
         // Click event for selecting cards
-        dom.addEventListener('click', (e) => {
+        dom.addEventListener('click', () => {
             if (this.isModalOpen) return;
 
-            // Check if raycaster intersects a mesh
             this.raycaster.setFromCamera(this.mouse, this.camera);
             const intersects = this.raycaster.intersectObjects(this.cardMeshes);
 
@@ -423,11 +396,11 @@ class HobbiesEngine {
     animate() {
         requestAnimationFrame(this.animate);
 
-        // Apply smooth rotation inertia to 3D sphere/prism
+        // Smooth rotation damping inertia
         if (!this.isDragging) {
-            this.rotationVelocity.y *= 0.95; // Damping
+            this.rotationVelocity.y *= 0.95;
             this.rotationVelocity.x *= 0.95;
-            this.targetRotation.y += this.rotationVelocity.y + 0.0015; // Slow ambient spin
+            this.targetRotation.y += this.rotationVelocity.y + 0.0012; // Slow ambient spin
             this.targetRotation.x += this.rotationVelocity.x;
         }
 
@@ -439,7 +412,7 @@ class HobbiesEngine {
             this.cardGroup.rotation.y = this.currentRotation.y;
         }
 
-        // Raycasting Hover Effect & Scale Interpolation
+        // Raycast Hover & Scale Interpolation
         if (!this.isModalOpen) {
             this.raycaster.setFromCamera(this.mouse, this.camera);
             const intersects = this.raycaster.intersectObjects(this.cardMeshes);
@@ -451,7 +424,7 @@ class HobbiesEngine {
                         this.hoveredMesh.userData.targetScale.set(1, 1, 1);
                     }
                     this.hoveredMesh = topMesh;
-                    this.hoveredMesh.userData.targetScale.set(1.18, 1.18, 1.18);
+                    this.hoveredMesh.userData.targetScale.set(1.15, 1.15, 1.15);
                     if (this.cursorEl) this.cursorEl.setAttribute('data-cursor-text', 'CLICK ↗');
                 }
             } else {
@@ -462,27 +435,25 @@ class HobbiesEngine {
                 if (this.cursorEl) this.cursorEl.removeAttribute('data-cursor-text');
             }
 
-            // Smooth scale lerp for hovered card
             this.cardMeshes.forEach(m => {
                 m.scale.lerp(m.userData.targetScale, 0.1);
             });
         }
 
-        // Camera lerp
+        // Camera position lerp
         this.camera.position.lerp(this.cameraTargetPos, 0.05);
 
-        // Render Scene
+        // Render
         if (this.renderer && this.scene && this.camera) {
             this.renderer.render(this.scene, this.camera);
         }
     }
 
     // =========================================================================
-    // Detail View Modal & Filmstrip Carousel Logic
+    // Detail View Modal Logic
     // =========================================================================
 
     setupModalListeners() {
-        const modal = document.getElementById('hobbies-modal');
         const closeBtn = document.getElementById('hobbies-modal-close');
         const prevBtn = document.getElementById('modal-prev-btn');
         const nextBtn = document.getElementById('modal-next-btn');
@@ -499,7 +470,6 @@ class HobbiesEngine {
             nextBtn.addEventListener('click', () => this.navigateModal(1));
         }
 
-        // Keyboard Shortcuts
         window.addEventListener('keydown', (e) => {
             if (!this.isModalOpen) return;
             if (e.key === 'Escape') this.closeDetailModal();
@@ -507,15 +477,15 @@ class HobbiesEngine {
             else if (e.key === 'ArrowRight') this.navigateModal(1);
         });
 
-        // 3D Cursor Tilt Effect on Modal Artwork Frame
+        // 3D Cursor Tilt Effect on Modal Showcase Card
         const artFrame = document.getElementById('modal-art-frame');
         if (artFrame) {
             artFrame.addEventListener('mousemove', (e) => {
                 const rect = artFrame.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                const rotX = -(y / (rect.height / 2)) * 14;
-                const rotY = (x / (rect.width / 2)) * 14;
+                const rotX = -(y / (rect.height / 2)) * 12;
+                const rotY = (x / (rect.width / 2)) * 12;
                 artFrame.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
             });
 
@@ -529,20 +499,16 @@ class HobbiesEngine {
         this.selectedItem = item;
         this.isModalOpen = true;
 
-        // Fly camera towards target mesh if provided
         if (targetMesh) {
             const worldPos = new THREE.Vector3();
             targetMesh.getWorldPosition(worldPos);
-            this.cameraTargetPos.copy(worldPos).add(new THREE.Vector3(0, 0, 220));
+            // Fly camera closer in world coordinates (Z = 4.5)
+            this.cameraTargetPos.copy(worldPos).add(new THREE.Vector3(0, 0, 4.5));
         }
 
-        // Populate Modal Content
         this.updateModalUI(item);
-
-        // Build Filmstrip Carousel
         this.buildFilmstripCarousel(item);
 
-        // Display Overlay
         const modal = document.getElementById('hobbies-modal');
         if (modal) {
             modal.classList.add('is-active');
@@ -556,7 +522,6 @@ class HobbiesEngine {
         this.isModalOpen = false;
         this.selectedItem = null;
 
-        // Reset camera position
         this.cameraTargetPos.copy(this.defaultCameraPos);
 
         const modal = document.getElementById('hobbies-modal');
@@ -586,7 +551,6 @@ class HobbiesEngine {
     }
 
     updateModalUI(item) {
-        // Path & Index Header
         const headerPath = document.getElementById('modal-header-path');
         const currentIndex = this.filteredData.findIndex(d => d.id === item.id) + 1;
         const totalCount = this.filteredData.length;
@@ -594,7 +558,6 @@ class HobbiesEngine {
             headerPath.textContent = `${item.categoryLabel} // ${currentIndex.toString().padStart(2, '0')} / ${totalCount.toString().padStart(2, '0')}`;
         }
 
-        // Left Column Artwork Frame
         const artFrame = document.getElementById('modal-art-frame');
         const artTitle = document.getElementById('modal-art-title');
         const artEra = document.getElementById('modal-art-era');
@@ -607,7 +570,6 @@ class HobbiesEngine {
         if (artEra) artEra.textContent = `${item.era} • ${item.scale}`;
         if (artBadge) artBadge.textContent = item.badge || item.categoryLabel;
 
-        // Right Column Editorial Specs
         const specTitle = document.getElementById('modal-spec-title');
         const specNarrative = document.getElementById('modal-spec-narrative');
         const specList = document.getElementById('modal-spec-list');
@@ -671,11 +633,9 @@ class HobbiesEngine {
     }
 }
 
-// Global instance instantiation
 window.hobbiesEngine = new HobbiesEngine();
 
 document.addEventListener('DOMContentLoaded', () => {
-    // If #hobbies is already active on load, initialize engine
     if (window.location.hash === '#hobbies' || document.body.classList.contains('theme-hobbies')) {
         window.hobbiesEngine.init();
     }

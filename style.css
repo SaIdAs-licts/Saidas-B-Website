@@ -1650,47 +1650,6 @@ body.theme-hobbies, html:has(body.theme-hobbies) {
   background: var(--bg-neon);
 }
 
-.hobbies-hud-top-right {
-  position: absolute;
-  top: calc(var(--nav-height, 68px) + 20px);
-  right: clamp(1rem, 2.5vw, 3rem);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  pointer-events: auto;
-}
-
-.hud-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-}
-
-.hud-count {
-  background: var(--text-dark);
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.hobbies-hud-bottom-left {
-  position: absolute;
-  bottom: 24px;
-  left: clamp(1rem, 2.5vw, 3rem);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  pointer-events: auto;
-}
-
 .hobbies-hud-bottom-right {
   position: absolute;
   bottom: 24px;
@@ -1729,8 +1688,8 @@ body.theme-hobbies, html:has(body.theme-hobbies) {
 .hobbies-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(17, 17, 17, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(18, 18, 18, 0.72);
+  backdrop-filter: blur(14px);
 }
 
 .hobbies-modal-container {
