@@ -1,70 +1,50 @@
 // =========================================================================
-// Vita Architecture Inspired Journal & Blog Engine (BlogEngine)
+// Vita Architecture Inspired Production-Grade Journal Engine (BlogEngine)
 // =========================================================================
 
 class BlogEngine {
     constructor() {
-        this.gridContainer = null;
+        this.matrixContainer = null;
         this.detailView = null;
         this.activeCategory = 'All';
         this.articles = [];
         this.filteredArticles = [];
         this.currentArticle = null;
-
-        // Rotating SVG Stamp Cursor
         this.badgeEl = null;
-
         this.initialized = false;
     }
 
     init() {
         if (this.initialized) return;
 
-        this.gridContainer = document.getElementById('journal-grid');
+        this.matrixContainer = document.getElementById('journal-matrix');
         this.detailView = document.getElementById('article-detail-view');
-        if (!this.gridContainer) return;
+        if (!this.matrixContainer) return;
 
-        // Load Articles Dataset
+        // Load dataset
         this.articles = window.blogData || [];
         this.filteredArticles = [...this.articles];
 
-        // Create Mouse-Follower Rotating SVG Stamp Badge
-        this.createRotatingBadge();
+        // Reference / Create rotating follower badge
+        this.initRotatingBadge();
 
-        // Bind Category Filter Bar Links
-        this.bindCategoryFilterBar();
+        // Bind filter category buttons
+        this.bindCategoryFilters();
 
-        // Render Initial Asymmetric Grid
-        this.renderGrid();
+        // Initial Render of Matrix Grid
+        this.renderMatrix();
 
-        // Bind Detail View Event Listeners
-        this.bindDetailViewEvents();
+        // Bind Reader Navigation Events
+        this.bindReaderEvents();
 
         this.initialized = true;
     }
 
-    createRotatingBadge() {
-        if (document.getElementById('journal-rotating-badge')) return;
+    initRotatingBadge() {
+        this.badgeEl = document.getElementById('journal-rotating-badge');
+        if (!this.badgeEl) return;
 
-        const badge = document.createElement('div');
-        badge.id = 'journal-rotating-badge';
-        badge.className = 'journal-rotating-badge';
-        badge.innerHTML = `
-            <svg viewBox="0 0 100 100" width="100" height="100">
-                <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none"/>
-                <text font-size="9.5" font-family="'Noto Sans Mono', monospace" font-weight="700" letter-spacing="1.8" fill="#111">
-                    <textPath href="#circlePath" startOffset="0%">
-                        READ THE ARTICLE • READ THE ARTICLE •
-                    </textPath>
-                </text>
-            </svg>
-            <div class="badge-arrow">→</div>
-        `;
-
-        document.body.appendChild(badge);
-        this.badgeEl = badge;
-
-        // Mousemove lerp positioning
+        // Lerp/Follow cursor over viewport when visible
         window.addEventListener('mousemove', (e) => {
             if (this.badgeEl && this.badgeEl.classList.contains('is-visible')) {
                 this.badgeEl.style.left = `${e.clientX}px`;
@@ -73,16 +53,16 @@ class BlogEngine {
         });
     }
 
-    bindCategoryFilterBar() {
-        const filterLinks = document.querySelectorAll('.category-filter-link');
-        filterLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+    bindCategoryFilters() {
+        const filterBtns = document.querySelectorAll('#journal-category-filters .filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const cat = e.currentTarget.getAttribute('data-category');
-                if (cat && cat !== this.activeCategory) {
-                    filterLinks.forEach(l => l.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    this.filterCategory(cat);
+                const category = btn.getAttribute('data-category');
+                if (category && category !== this.activeCategory) {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.filterCategory(category);
                 }
             });
         });
@@ -95,67 +75,70 @@ class BlogEngine {
             this.filteredArticles = [...this.articles];
         } else {
             this.filteredArticles = this.articles.filter(item => {
-                if (item.isQuoteCell) return true; // Keep quote cell visible
-                return item.category.toLowerCase().includes(category.toLowerCase()) || 
-                       category.toLowerCase().includes(item.category.toLowerCase());
+                if (item.isQuoteCell) return true; // Retain typographic quote thesis block
+                return item.category.toLowerCase() === category.toLowerCase() ||
+                       item.category.toLowerCase().includes(category.toLowerCase());
             });
         }
 
-        // Animate Grid Fade
-        this.gridContainer.style.opacity = '0';
-        this.gridContainer.style.transform = 'translateY(10px)';
+        // Smooth transition animation
+        this.matrixContainer.style.opacity = '0';
+        this.matrixContainer.style.transform = 'translateY(8px)';
 
         setTimeout(() => {
-            this.renderGrid();
-            this.gridContainer.style.opacity = '1';
-            this.gridContainer.style.transform = 'translateY(0)';
-        }, 200);
+            this.renderMatrix();
+            this.matrixContainer.style.opacity = '1';
+            this.matrixContainer.style.transform = 'translateY(0)';
+        }, 180);
     }
 
-    renderGrid() {
-        if (!this.gridContainer) return;
-        this.gridContainer.innerHTML = '';
+    renderMatrix() {
+        if (!this.matrixContainer) return;
+        this.matrixContainer.innerHTML = '';
 
         if (this.filteredArticles.length === 0) {
-            this.gridContainer.innerHTML = '<div class="journal-empty-state">No articles found in this stream.</div>';
+            this.matrixContainer.innerHTML = '<div class="journal-empty-cell">NO ARTICLES FOUND IN THIS STREAM.</div>';
             return;
         }
 
-        this.filteredArticles.forEach((item, idx) => {
+        this.filteredArticles.forEach((item) => {
             const cell = document.createElement('article');
 
             if (item.isQuoteCell) {
-                // Editorial Typographic Quote Cell Module
+                // Typographic Quote Block (grid-column: span 1 or span 2)
                 cell.className = 'journal-cell quote-cell';
                 cell.innerHTML = `
                     <div class="quote-cell-inner">
-                        <span class="quote-kicker">EDITORIAL THESIS</span>
                         <blockquote class="quote-text">${item.quoteText}</blockquote>
-                        <cite class="quote-author">${item.author || 'Saidas B'}</cite>
+                        <span class="quote-author">— ${item.author || 'SAIDAS B'}</span>
                     </div>
                 `;
             } else {
-                // Article Card Module (Featured Wide or Standard 1-Column)
-                cell.className = `journal-cell article-cell ${item.featured ? 'featured-wide-cell' : ''}`;
+                // Architectural Article Cell (Featured Wide: span 2, Standard: span 1)
+                const isWide = item.featured;
+                cell.className = `journal-cell ${isWide ? 'span-2-col' : ''}`;
                 cell.setAttribute('data-id', item.id);
 
                 cell.innerHTML = `
-                    <div class="card-top-meta">
-                        <span class="meta-cat">${item.category.toUpperCase()}</span>
-                        <span class="meta-date">${item.date}</span>
+                    <!-- Top Metadata Row -->
+                    <div class="cell-meta-bar">
+                        <span class="meta-category">${item.category.toUpperCase()}</span>
+                        <span class="meta-date">${item.date || '22/12/25'}</span>
                     </div>
 
-                    <div class="card-image-wrap">
-                        <img src="${item.image || 'assets/images/photo.png'}" alt="${item.title}" class="card-img" loading="lazy">
+                    <!-- Middle Image Frame -->
+                    <div class="cell-image-frame ${isWide ? 'aspect-16-9' : 'aspect-4-3'}">
+                        <img src="${item.image}" alt="${item.title}" loading="lazy">
                     </div>
 
-                    <div class="card-text-footer">
-                        <h3 class="card-title">${item.title}</h3>
-                        <p class="card-excerpt">— ${item.excerpt}</p>
+                    <!-- Bottom Title & Excerpt -->
+                    <div class="cell-body">
+                        <h3 class="cell-title">${item.title}</h3>
+                        <p class="cell-excerpt">— ${item.excerpt}</p>
                     </div>
                 `;
 
-                // Bind Rotating Hover Badge Interactions
+                // Hover badge follower triggers
                 cell.addEventListener('mouseenter', () => {
                     if (this.badgeEl) this.badgeEl.classList.add('is-visible');
                 });
@@ -164,71 +147,39 @@ class BlogEngine {
                     if (this.badgeEl) this.badgeEl.classList.remove('is-visible');
                 });
 
-                // Click to Open Full Editorial Reader
+                // Click trigger to view article
                 cell.addEventListener('click', () => {
                     if (this.badgeEl) this.badgeEl.classList.remove('is-visible');
-                    this.openArticleDetail(item);
+                    this.openArticleReader(item);
                 });
             }
 
-            this.gridContainer.appendChild(cell);
+            this.matrixContainer.appendChild(cell);
         });
     }
 
     // =========================================================================
-    // Full Editorial Article Reading View (ArticleDetail)
+    // Editorial Article Reader View
     // =========================================================================
 
-    bindDetailViewEvents() {
+    bindReaderEvents() {
         const backBtn = document.getElementById('article-back-btn');
         if (backBtn) {
-            backBtn.addEventListener('click', () => this.closeArticleDetail());
+            backBtn.addEventListener('click', () => this.closeArticleReader());
         }
 
-        // Share Pills Handler
-        const shareBtnLinkedIn = document.getElementById('share-linkedin');
-        const shareBtnX = document.getElementById('share-x');
-        const shareBtnCopy = document.getElementById('share-copy');
-
-        if (shareBtnLinkedIn) {
-            shareBtnLinkedIn.addEventListener('click', () => {
-                const url = encodeURIComponent(window.location.href);
-                window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
-            });
-        }
-
-        if (shareBtnX) {
-            shareBtnX.addEventListener('click', () => {
-                const text = encodeURIComponent(this.currentArticle ? this.currentArticle.title : 'Check out this article');
-                const url = encodeURIComponent(window.location.href);
-                window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-            });
-        }
-
-        if (shareBtnCopy) {
-            shareBtnCopy.addEventListener('click', () => {
-                navigator.clipboard.writeText(window.location.href);
-                const originalText = shareBtnCopy.innerHTML;
-                shareBtnCopy.innerHTML = '<i class="fas fa-check"></i> COPIED!';
-                setTimeout(() => {
-                    shareBtnCopy.innerHTML = originalText;
-                }, 2000);
-            });
-        }
-
-        // Keyboard Escape key to close reader
+        // Close on Escape key press
         window.addEventListener('keydown', (e) => {
-            if (this.detailView && this.detailView.classList.contains('is-active') && e.key === 'Escape') {
-                this.closeArticleDetail();
+            if (this.detailView && this.detailView.style.display !== 'none' && e.key === 'Escape') {
+                this.closeArticleReader();
             }
         });
     }
 
-    openArticleDetail(item) {
+    openArticleReader(item) {
         this.currentArticle = item;
         if (!this.detailView) return;
 
-        // Populate Detail UI Elements
         const titleEl = document.getElementById('article-reader-title');
         const catEl = document.getElementById('article-reader-cat');
         const dateEl = document.getElementById('article-reader-date');
@@ -237,66 +188,63 @@ class BlogEngine {
 
         if (titleEl) titleEl.textContent = item.title;
         if (catEl) catEl.textContent = item.category.toUpperCase();
-        if (dateEl) dateEl.textContent = item.date;
+        if (dateEl) dateEl.textContent = item.date || '22/12/25';
         if (heroImg) {
-            heroImg.src = item.image || 'assets/images/photo.png';
+            heroImg.src = item.image;
             heroImg.alt = item.title;
         }
-        if (bodyEl) bodyEl.innerHTML = item.content || `<p>${item.excerpt}</p>`;
+        if (bodyEl) bodyEl.innerHTML = item.content || `<p class="lead-paragraph">${item.excerpt}</p>`;
 
-        // Build Related Articles Grid
-        this.renderRelatedArticles(item);
+        // Render 3-column related stories block
+        this.renderRelatedStories(item);
 
-        // Display Full-Page Reader Overlay
+        // Show Full-Page Reader
         this.detailView.style.display = 'block';
-        setTimeout(() => {
-            this.detailView.classList.add('is-active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 10);
+        const stage = document.getElementById('article-reader-stage');
+        if (stage) stage.scrollTop = 0;
     }
 
-    closeArticleDetail() {
+    closeArticleReader() {
         if (!this.detailView) return;
-        this.detailView.classList.remove('is-active');
-        setTimeout(() => {
-            this.detailView.style.display = 'none';
-            this.currentArticle = null;
-        }, 350);
+        this.detailView.style.display = 'none';
+        this.currentArticle = null;
     }
 
-    renderRelatedArticles(currentArticle) {
-        const relatedGrid = document.getElementById('related-articles-grid');
-        if (!relatedGrid) return;
+    renderRelatedStories(currentArticle) {
+        const grid = document.getElementById('related-articles-grid');
+        if (!grid) return;
 
-        relatedGrid.innerHTML = '';
+        grid.innerHTML = '';
 
-        // Pick 3 related articles excluding current and quote cells
-        const candidates = this.articles.filter(a => !a.isQuoteCell && a.id !== currentArticle.id);
-        const related = candidates.slice(0, 3);
+        // Pick 3 articles excluding current article and quote blocks
+        const related = this.articles
+            .filter(a => !a.isQuoteCell && a.id !== currentArticle.id)
+            .slice(0, 3);
 
         related.forEach(item => {
             const card = document.createElement('div');
             card.className = 'related-article-card';
             card.innerHTML = `
-                <div class="related-img-wrap">
-                    <img src="${item.image || 'assets/images/photo.png'}" alt="${item.title}" loading="lazy">
+                <div class="cell-meta-bar">
+                    <span class="meta-category">${item.category.toUpperCase()}</span>
+                    <span class="meta-date">${item.date}</span>
                 </div>
-                <div class="related-meta">${item.category.toUpperCase()} • ${item.date}</div>
-                <h4 class="related-title">${item.title}</h4>
+                <div class="cell-image-frame aspect-4-3">
+                    <img src="${item.image}" alt="${item.title}" loading="lazy">
+                </div>
+                <h4 class="related-card-title">${item.title}</h4>
             `;
 
             card.addEventListener('click', () => {
-                this.openArticleDetail(item);
-                const readerStage = document.getElementById('article-reader-stage');
-                if (readerStage) readerStage.scrollTop = 0;
+                this.openArticleReader(item);
             });
 
-            relatedGrid.appendChild(card);
+            grid.appendChild(card);
         });
     }
 }
 
-// Global Instantiation
+// Global Engine Instantiation
 window.blogEngine = new BlogEngine();
 
 document.addEventListener('DOMContentLoaded', () => {

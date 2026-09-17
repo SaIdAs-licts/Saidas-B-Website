@@ -558,56 +558,83 @@
         </div>
     </section>
 
-    <!-- Blog Section (Vita Architecture Journal Design) -->
+    <!-- Blog Section (Production-Grade Architectural Journal Redesign) -->
     <section id="blog" class="blog reveal">
         <!-- Rotating mouse follower badge element -->
-        <div id="badge-follower" class="badge-follower">
+        <div id="journal-rotating-badge" class="journal-rotating-badge">
             <svg viewBox="0 0 100 100" class="rotating-text-svg">
                 <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
-                <text font-size="10.5" font-weight="700" letter-spacing="2.2" fill="#000">
+                <text font-size="9.5" font-family="monospace" font-weight="700" letter-spacing="1.8" fill="#111">
                     <textPath href="#circlePath" startOffset="0%">
                         READ THE ARTICLE • READ THE ARTICLE •
                     </textPath>
                 </text>
             </svg>
+            <div class="badge-arrow">→</div>
         </div>
 
         <div class="journal-wrapper">
-            <!-- Journal Masthead & Category Filter Bar -->
+            <!-- Top Container Masthead & Filter Bar Layout -->
             <div class="journal-masthead">
                 <div class="masthead-left">
-                    <span class="masthead-meta-label">ARCHIVE INDEX /</span>
+                    <span class="masthead-meta-label">INDEX /</span>
                     <nav class="category-filters" id="journal-category-filters">
-                        <button class="filter-btn active" data-category="All">All</button>
-                        <span class="sep">,</span>
-                        <button class="filter-btn" data-category="Thoughts">Thoughts</button>
-                        <span class="sep">,</span>
-                        <button class="filter-btn" data-category="Operations">Operations</button>
-                        <span class="sep">,</span>
-                        <button class="filter-btn" data-category="Quant & Finance">Quant & Finance</button>
-                        <span class="sep">,</span>
+                        <button class="filter-btn active" data-category="All">All</button><span class="sep">,</span>
+                        <button class="filter-btn" data-category="Thoughts">Thoughts</button><span class="sep">,</span>
+                        <button class="filter-btn" data-category="Operations">Operations</button><span class="sep">,</span>
+                        <button class="filter-btn" data-category="Quant & Finance">Quant & Finance</button><span class="sep">,</span>
                         <button class="filter-btn" data-category="Engineering">Engineering</button>
                     </nav>
                 </div>
                 <div class="masthead-right">
-                    <span class="masthead-issue">VOL. IV / 2026</span>
+                    <h1 class="journal-main-title">JOURNAL</h1>
                 </div>
             </div>
 
-            <!-- Header Title -->
-            <div class="journal-header-title-box">
-                <h1 class="journal-main-title">JOURNAL</h1>
-            </div>
-
-            <!-- Asymmetric Grid Container -->
-            <div class="journal-grid" id="journal-grid">
+            <!-- Architectural Hairline Grid (Zero Gap Matrix) -->
+            <div class="journal-matrix" id="journal-matrix">
                 <!-- Injected dynamically by blog.js -->
             </div>
         </div>
 
-        <!-- Full Article Reader View Overlay -->
+        <!-- Full-Page Article Reader View -->
         <div id="article-detail-view" class="article-detail-view" style="display: none;">
-            <!-- Content dynamically rendered by blog.js -->
+            <div class="article-reader-stage" id="article-reader-stage">
+                <div class="article-reader-container">
+                    <!-- Top Control Bar -->
+                    <div class="article-reader-nav">
+                        <button type="button" class="back-to-journal-btn" id="article-back-btn">
+                            ← BACK TO JOURNAL
+                        </button>
+                        <div class="article-reader-meta-top">
+                            <span class="meta-cat" id="article-reader-cat">THOUGHTS</span>
+                            <span class="sep">•</span>
+                            <span class="meta-date" id="article-reader-date">22/12/25</span>
+                        </div>
+                    </div>
+
+                    <!-- Hero Header -->
+                    <header class="article-header-hero">
+                        <h1 class="article-hero-title" id="article-reader-title">Article Title</h1>
+                        <div class="article-featured-image-frame">
+                            <img id="article-reader-hero" src="" alt="" loading="lazy">
+                        </div>
+                    </header>
+
+                    <!-- Prose Column -->
+                    <article class="article-prose-column" id="article-reader-body">
+                        <!-- Dynamic article content -->
+                    </article>
+
+                    <!-- Related Stories Grid -->
+                    <section class="related-articles-section">
+                        <h3 class="related-section-title">RELATED ARTICLES</h3>
+                        <div class="related-articles-grid" id="related-articles-grid">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
     </section>
 
