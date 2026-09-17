@@ -1735,12 +1735,14 @@ body.theme-hobbies, html:has(body.theme-hobbies) {
 
 .hobbies-modal-container {
   position: relative;
-  width: min(94vw, 1280px);
-  height: min(92dvh, 840px);
+  width: min(90vw, 1280px);
+  height: min(82dvh, 820px);
   background: var(--bg-light);
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   border-radius: 16px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  padding: 24px 32px 16px 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1754,53 +1756,54 @@ body.theme-hobbies, html:has(body.theme-hobbies) {
   transform: scale(1.0);
 }
 
-.hobbies-modal-header {
+.modal-top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 28px;
-  border-bottom: 1.5px solid var(--border-color);
-  background: #ffffff;
+  width: 100%;
+  height: 36px;
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 
-.modal-path-indicator {
+.modal-breadcrumb {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  color: var(--text-dark);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: #666666;
+  font-weight: 600;
 }
 
-.modal-close-btn,
-.artifact-modal-close {
-  position: absolute;
-  top: 24px;
-  right: 32px;
+.modal-close-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border: 1.5px solid #000000;
   border-radius: 9999px;
-  padding: 8px 18px;
-  font-family: inherit;
+  padding: 6px 16px;
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #111;
+  color: #000000;
   cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 50;
+  transition: background 0.2s ease, color 0.2s ease;
+  position: static;
+  z-index: 10;
 }
 
-.modal-close-btn:hover,
-.artifact-modal-close:hover {
-  background: #111;
-  color: #fff;
-  border-color: #111;
+.modal-close-btn:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.close-icon {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .hobbies-modal-stage {
