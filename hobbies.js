@@ -495,13 +495,13 @@ class HobbiesEngine {
     setupModalListeners() {
         const modal = document.getElementById('hobbies-modal');
         const backdrop = document.querySelector('.hobbies-modal-backdrop');
-        const closeBtn = document.getElementById('hobbies-modal-close');
+        const closeBtns = document.querySelectorAll('.spec-modal-close-trigger, #hobbies-modal-close, .modal-close-btn');
         const prevBtn = document.getElementById('modal-prev-btn');
         const nextBtn = document.getElementById('modal-next-btn');
 
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.closeDetailModal());
-        }
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => this.closeDetailModal());
+        });
 
         if (backdrop) {
             backdrop.addEventListener('click', () => this.closeDetailModal());
